@@ -123,13 +123,17 @@
   --sidebar-border: var(--border);
   --sidebar-ring: var(--evergreen);
 
-  --shadow-soft: 0 1px 2px oklch(0.3694 0.0495 167.01 / 0.06),
+  --shadow-soft:
+    0 1px 2px oklch(0.3694 0.0495 167.01 / 0.06),
     0 18px 40px -22px oklch(0.3694 0.0495 167.01 / 0.28);
-  --shadow-lift: 0 2px 4px oklch(0.3694 0.0495 167.01 / 0.06),
+  --shadow-lift:
+    0 2px 4px oklch(0.3694 0.0495 167.01 / 0.06),
     0 32px 60px -30px oklch(0.3204 0.0432 166.49 / 0.45);
-  --gradient-hero: radial-gradient(120% 80% at 85% 10%, var(--sage-soft) 0%, transparent 55%),
+  --gradient-hero:
+    radial-gradient(120% 80% at 85% 10%, var(--sage-soft) 0%, transparent 55%),
     radial-gradient(70% 60% at 0% 100%, oklch(0.9411 0.0176 73.07 / 0.9) 0%, transparent 60%);
-  --gradient-evergreen: radial-gradient(90% 70% at 100% 0%, oklch(0.42 0.05 165) 0%, transparent 60%),
+  --gradient-evergreen:
+    radial-gradient(90% 70% at 100% 0%, oklch(0.42 0.05 165) 0%, transparent 60%),
     linear-gradient(180deg, var(--evergreen) 0%, var(--evergreen-deep) 100%);
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -155,16 +159,22 @@
     overflow-x: clip;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    font-variation-settings: "SOFT" 50, "WONK" 0;
+    font-variation-settings:
+      "SOFT" 50,
+      "WONK" 0;
     letter-spacing: -0.02em;
     line-height: 1.05;
     text-wrap: balance;
   }
 
-  p { text-wrap: pretty; }
+  p {
+    text-wrap: pretty;
+  }
 
   :focus-visible {
     outline: 2px solid var(--evergreen);
@@ -183,8 +193,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -198,8 +212,12 @@
   max-width: 76rem;
   margin-inline: auto;
   padding-inline: 1.25rem;
-  @media (min-width: 640px) { padding-inline: 2rem; }
-  @media (min-width: 1024px) { padding-inline: 3rem; }
+  @media (min-width: 640px) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 1024px) {
+    padding-inline: 3rem;
+  }
 }
 
 @utility eyebrow {
@@ -243,34 +261,59 @@
 
 @utility portrait-wash {
   background-color: var(--sage-soft);
-  background-image: radial-gradient(90% 55% at 50% 28%, var(--paper) 0%, transparent 72%),
+  background-image:
+    radial-gradient(90% 55% at 50% 28%, var(--paper) 0%, transparent 72%),
     linear-gradient(180deg, var(--sage-soft) 0%, var(--sage) 100%);
 }
 
 /* ---------- Workflow graphic animation (Our Approach) ---------- */
 
 @keyframes flow-dash {
-  to { stroke-dashoffset: -48; }
+  to {
+    stroke-dashoffset: -48;
+  }
 }
 
 @keyframes travel {
-  from { offset-distance: 0%; }
-  to { offset-distance: 100%; }
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
 }
 
 @keyframes node-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.55; }
-  50% { transform: scale(1.35); opacity: 0; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
 }
 
 @keyframes float-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .wf-connector {
@@ -305,22 +348,38 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wf-connector, .wf-traveller, .wf-pulse, .wf-float, .wf-panel-enter {
+  .wf-connector,
+  .wf-traveller,
+  .wf-pulse,
+  .wf-float,
+  .wf-panel-enter {
     animation: none !important;
   }
-  .wf-traveller { offset-distance: 50%; }
+  .wf-traveller {
+    offset-distance: 50%;
+  }
 }
 
 /* ---------- Entrance effects (one-off, never looping) ---------- */
 
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes rule-draw {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .enter-rise {
@@ -334,7 +393,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .enter-rise, .enter-rule {
+  .enter-rise,
+  .enter-rule {
     animation: none !important;
     opacity: 1;
     transform: none;
@@ -347,3 +407,14 @@
   transition: transform 0.6s var(--ease-soft);
 }
 
+/* Keep hash destinations visible below the responsive sticky header. */
+main section[id],
+#main {
+  scroll-margin-top: 5.5rem;
+}
+@media (min-width: 640px) {
+  main section[id],
+  #main {
+    scroll-margin-top: 6.5rem;
+  }
+}
