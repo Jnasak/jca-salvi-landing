@@ -23,8 +23,8 @@ export function WhyUs() {
             Business clarity meets practical coordination.
           </h2>
           <p className="mt-6 max-w-xl text-lg">
-            We are independent professionals combining business analysis and product thinking
-            with customer experience, operations and delivery coordination.
+            We are independent professionals combining business analysis and product thinking with
+            customer experience, operations and delivery coordination.
           </p>
           <p className="mt-6 inline-flex items-center gap-3 rounded-full border border-evergreen/15 bg-paper px-4 py-2 text-sm font-semibold">
             <span aria-hidden="true" className="size-2 rounded-full bg-champagne" />
@@ -55,4 +55,3 @@ export function WhyUs() {
     </section>
   );
 }
-

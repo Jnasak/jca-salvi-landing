@@ -21,8 +21,8 @@ export function DiscussProject() {
             What would you like to make work better?
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg text-on-dark-muted">
-            Bring a short description, your intended outcome and timing, and we can discuss
-            project fit.
+            Bring a short description, your intended outcome and timing, and we can discuss project
+            fit.
           </p>
         </div>
 
@@ -70,4 +70,3 @@ export function DiscussProject() {
     </section>
   );
 }
-

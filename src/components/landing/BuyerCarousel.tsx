@@ -70,9 +70,8 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
             </h2>
           </div>
           <p className="max-w-sm text-sm text-on-dark-muted">
-            Six illustrative buyer situations, not verified client cases. Use the tabs, arrows
-            or your keyboard’s arrow keys{" "}
-            <span className="sm:hidden">— or swipe —</span> to explore.
+            Six illustrative buyer situations, not verified client cases. Use the tabs, arrows or
+            your keyboard’s arrow keys <span className="sm:hidden">— or swipe —</span> to explore.
           </p>
         </div>
 
@@ -110,7 +109,9 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
                       : "border-cream/25 text-cream hover:border-cream/60",
                   )}
                 >
-                  <span className={cn("tabular-nums", on ? "text-evergreen-soft" : "text-champagne")}>
+                  <span
+                    className={cn("tabular-nums", on ? "text-evergreen-soft" : "text-champagne")}
+                  >
                     {pad(i + 1)}
                   </span>
                   {s.shortLabel}
@@ -172,7 +173,11 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
                           {s.help.map((h) => (
                             <li key={h} className="flex gap-3">
                               <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-sage">
-                                <Check aria-hidden="true" className="size-3 text-evergreen" strokeWidth={3} />
+                                <Check
+                                  aria-hidden="true"
+                                  className="size-3 text-evergreen"
+                                  strokeWidth={3}
+                                />
                               </span>
                               <span>{h}</span>
                             </li>
@@ -183,10 +188,7 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
                         </p>
                         <ul className="mt-2.5 flex flex-col gap-2">
                           {s.serviceIds.map((id) => (
-                            <li
-                              key={id}
-                              className="flex items-baseline gap-2.5 text-sm"
-                            >
+                            <li key={id} className="flex items-baseline gap-2.5 text-sm">
                               <span className="rounded-md bg-sage px-1.5 py-0.5 text-xs font-bold tabular-nums">
                                 {id}
                               </span>
@@ -222,7 +224,11 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
               <ArrowLeft aria-hidden="true" />
             </Button>
             <div className="flex flex-col items-center gap-2.5">
-              <p className="text-sm font-semibold tabular-nums" aria-live="polite" aria-atomic="true">
+              <p
+                className="text-sm font-semibold tabular-nums"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 <span className="sr-only">Situation </span>
                 {pad(index + 1)}
                 <span className="text-on-dark-muted"> / {pad(total)}</span>
@@ -256,4 +262,3 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
     </section>
   );
 }
-
