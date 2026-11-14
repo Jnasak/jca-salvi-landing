@@ -56,6 +56,51 @@ Basic responsive and interaction acceptance is now PASS WITH CONTROLS. No new fr
 
 The controls above do not establish comprehensive accessibility conformance or measured touch-target sizes. The authored target sizes are documented under Implemented; computed dimensions still need verification.
 
+## Targeted accessibility follow-up — 14 November 2026
+
+Scope: continue open accessibility verification only. JCA's accepted responsive/interaction results above are retained and were not reopened. Application source is unchanged from browser-tested commit `5db6ea9c9a1e4650119fcdc294f7e9fd92f68cec`; this follow-up starts from documentation head `951ea74c8b711f7a5cf74d42cbf36a400fa82ee8` and adds tests/evidence only.
+
+### Executed source and interaction checks
+
+Using the existing Vitest/Testing Library dependencies, added three focused regressions in `src/test/targeted-accessibility.test.tsx`:
+
+- Reduced-motion preference at mount: workflow starts paused and does not automatically advance over 12 simulated seconds.
+- Preference changed at runtime: an already-playing workflow pauses, does not advance, remains paused when the preference is removed, and removes its media-query listener on unmount.
+- Workflow controls: pause/resume changes automatic selection; ArrowLeft/ArrowRight/Home/End select and focus the expected tab, retain the roving tab stop and label the panel correctly.
+
+Executed results: all 18 tests across five files PASS; TypeScript PASS; repository-wide ESLint PASS with zero errors and six existing Fast Refresh warnings. These are jsdom state/semantics checks. They do not verify actual SVG animation, CSS media-query rendering, spoken announcements or real assistive-technology navigation. No new tooling or dependencies were added.
+
+Source inspection also confirms reduced-motion CSS disables workflow keyframe animations and shortens global transitions, and inactive buyer panels have `aria-hidden` and `inert`. Actual browser/assistive-technology behaviour remains pending below.
+
+### Source-token contrast calculations
+
+Method: convert the authored OKLCH tokens in `src/styles.css` to linear sRGB via OKLab, calculate relative luminance using 0.2126/0.7152/0.0722 weights, then calculate `(lighter + 0.05) / (darker + 0.05)`. Rounded ratios below apply only to the listed opaque solid colours. These are numerical source checks, not browser-computed or pixel-sampled contrast results.
+
+| Foreground / background    | Calculated ratio         |
+| -------------------------- | ------------------------ |
+| Evergreen / cream          | 9.75:1                   |
+| Soft evergreen / cream     | 5.60:1                   |
+| Soft evergreen / sage      | 4.55:1                   |
+| Soft evergreen / soft sage | 5.08:1                   |
+| Evergreen / paper          | 10.04:1                  |
+| Soft evergreen / paper     | 5.77:1                   |
+| Champagne / evergreen      | 5.32:1                   |
+| Champagne / deep evergreen | 6.48:1                   |
+| Persimmon / cream          | 2.80:1 — decorative only |
+
+Contrast follow-up: the bright highlight stop in `--gradient-evergreen` against champagne calculates approximately 4.30:1 if treated as an opaque solid background. This is a source-level risk, not a confirmed rendered failure: actual text placement and compositing must be measured. Check champagne small text wherever it overlaps the highlight, alpha-muted copy, hover backgrounds, and focus indicators. Do not infer a complete contrast pass from the solid-token ratios. Persimmon usages inspected are decorative accents or an `aria-hidden` icon with a textual label.
+
+### Only the remaining local-browser checks
+
+JCA can keep testing the existing application SHA; no checkout change is required for the tests/evidence-only update.
+
+1. **200% zoom:** use Chrome's menu to set Zoom to 200%. Inspect text reflow, the mobile drawer, a maximised service dialog and visible keyboard focus for clipping or unreachable controls. Restore 100% afterwards. This is a zoom check, not a repeat of the accepted viewport matrix.
+2. **Reduced motion:** in DevTools Rendering, emulate `prefers-reduced-motion: reduce` and reload. Confirm workflow starts with Play and its illustration stays still; manual workflow tabs must remain usable. Remove emulation after recording the result.
+3. **Contrast:** use DevTools' contrast inspection on champagne text over the brightest visible dark-section backgrounds, soft evergreen body text, muted copy and control/focus states. Record actual foreground/background values and ratios; resolve any applicable failures before closing this gate.
+4. **Screen reader:** use an available screen reader (for example Windows Narrator); record its name/version and Chrome version. Verify skip link/main landmark, headings, navigation button name and expanded state, modal title/close announcement, buyer/workflow tab selection and panel labels, inactive-slide exclusion, and destination/focus restoration. Keyboard-only tests do not substitute for this check.
+
+A browser accessibility scan and computed target measurements remain open as recorded below. No browser scan, screen-reader pass, zoom pass, rendered-motion pass or comprehensive conformance is claimed in this follow-up.
+
 ## Remaining accessibility checks
 
 These are PENDING, not covered by the eight reported checks. Record the exact tested application SHA, browser, assistive-technology version where applicable, results and defects.
