@@ -73,7 +73,9 @@ describe("hero redesign", () => {
   it("uses the approved headline, eyebrow and supporting copy exactly", async () => {
     const { heroCopy } = await import("@/content/landing");
     expect(heroCopy.headlineSentences.flat().join(" ")).toBe(heroCopy.headline);
-    expect(heroCopy.headline).toBe("Your business is growing. Let's make the way it works even better.");
+    expect(heroCopy.headline).toBe(
+      "Your business is growing. Let's make the way it works even better.",
+    );
     expect(heroCopy.eyebrow).toBe("Business, Product & Operations Delivery Partners");
     expect(heroCopy.supporting).toBe(
       "We help growing teams untangle workflows, clarify product needs and coordinate delivery — with practical solutions scoped around your business.",
@@ -83,10 +85,20 @@ describe("hero redesign", () => {
   it("links the hero CTAs to #discuss and #solutions and shows both pending portraits, without the workflow graphic", async () => {
     const { Hero } = await import("@/components/landing/Hero");
     render(<Hero />);
-    expect(screen.getByRole("link", { name: /Discuss Your Project/ })).toHaveAttribute("href", "#discuss");
-    expect(screen.getByRole("link", { name: /Explore Solutions/ })).toHaveAttribute("href", "#solutions");
-    expect(screen.getByRole("img", { name: "JCA — approved portrait pending" })).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "Salvi — approved portrait pending" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Discuss Your Project/ })).toHaveAttribute(
+      "href",
+      "#discuss",
+    );
+    expect(screen.getByRole("link", { name: /Explore Solutions/ })).toHaveAttribute(
+      "href",
+      "#solutions",
+    );
+    expect(
+      screen.getByRole("img", { name: "JCA — approved portrait pending" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Salvi — approved portrait pending" }),
+    ).toBeInTheDocument();
     expect(screen.queryByRole("tablist", { name: "Workflow focus areas" })).toBeNull();
   });
 
@@ -99,4 +111,3 @@ describe("hero redesign", () => {
     expect(screen.getByText("Illustrative workflow — not client data.")).toBeInTheDocument();
   });
 });
-

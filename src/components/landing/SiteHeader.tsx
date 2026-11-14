@@ -13,7 +13,11 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-cream/85 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between gap-3 sm:h-20">
-        <a href="#top" className="-ml-4 shrink-0 rounded-md sm:-ml-6" aria-label="JCA × Salvi — back to top">
+        <a
+          href="#top"
+          className="-ml-4 shrink-0 rounded-md sm:-ml-6"
+          aria-label="JCA × Salvi — back to top"
+        >
           <Logo className="w-[150px] sm:w-[220px]" />
         </a>
         <nav aria-label="Page sections" className="hidden lg:block">
@@ -41,4 +45,3 @@ export function SiteHeader() {
     </header>
   );
 }
-

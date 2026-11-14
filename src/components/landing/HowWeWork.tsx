@@ -20,8 +20,8 @@ export function HowWeWork() {
             </h2>
           </div>
           <p className="max-w-md text-on-dark-muted lg:justify-self-end">
-            These are available routes, not compulsory stages. A project may use one, two or
-            all three, depending on what you need.
+            These are available routes, not compulsory stages. A project may use one, two or all
+            three, depending on what you need.
           </p>
         </div>
         <ul className="mt-12 grid gap-5 md:grid-cols-3">
@@ -40,9 +40,7 @@ export function HowWeWork() {
                 </p>
                 <h3 className="mt-2 text-2xl font-medium sm:text-3xl">{r.title}</h3>
                 <p className="mt-3 text-on-dark-muted">{r.body}</p>
-                <p className="mt-auto border-t border-cream/15 pt-5 text-sm text-cream">
-                  {r.fit}
-                </p>
+                <p className="mt-auto border-t border-cream/15 pt-5 text-sm text-cream">{r.fit}</p>
               </li>
             );
           })}
@@ -51,4 +49,3 @@ export function HowWeWork() {
     </section>
   );
 }
-
