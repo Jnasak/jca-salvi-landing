@@ -143,7 +143,7 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
                     inert={!on}
                     className="w-full shrink-0"
                   >
-                    <article className="grid h-full gap-8 rounded-3xl bg-paper p-6 text-evergreen sm:p-10 md:grid-cols-[1.1fr_1fr] md:gap-12">
+                    <article className="on-light grid h-full gap-8 rounded-3xl bg-paper p-6 text-evergreen sm:p-10 md:grid-cols-[1.1fr_1fr] md:gap-12">
                       <div className="flex flex-col">
                         <p className="eyebrow text-evergreen-soft">
                           Situation {pad(i + 1)} of {pad(total)} · Illustrative

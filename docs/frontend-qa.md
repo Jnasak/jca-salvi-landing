@@ -119,3 +119,18 @@ These are PENDING, not covered by the eight reported checks. Record the exact te
 The discussion destination still explicitly reports that its live enquiry connection is unavailable. BOS integration and approved contact destinations are required to complete live conversion. This navigation change does not create an enquiry database or transmit lead data. Approved partner photographs and release approvals remain separate dependencies.
 
 Recommendation: PASS WITH CONTROLS for basic responsive and interaction acceptance on the exact browser-tested SHA. Remaining accessibility checks and independent PR review are pending. Enquiry integration and eligible commercial hosting remain separate release dependencies. No merge, preview or production release clearance is implied.
+
+## Focus/contrast correction follow-up — 14 November 2026
+
+PR #2 is merged at `04975f7036bb8db1ef468f523523eaf2b7e16985`. The following narrow changes are proposed on a new feature branch; accepted basic browser results remain attributed to their original tested SHA and are not reopened.
+
+- **Source-identified focus issue corrected:** `.on-dark :focus-visible` previously applied champagne outlines inside the buyer carousel's paper cards. Champagne/paper calculates 1.89:1. The cards now declare a light surface and a scoped rule restores evergreen outlines there (evergreen/paper 10.04:1). Other dark-section focus indicators retain champagne. Verify the affected card CTA outline in the browser; jsdom does not render CSS.
+- **Gradient risk mitigated:** reduce only the decorative gradient-highlight lightness from 0.42 to 0.40. Champagne against this brightest solid stop now calculates 4.68:1 instead of 4.30:1. Brand base tokens, typography and layout are unchanged. Actual rendered text, compositing and focus contrast still require browser confirmation.
+- **Executed after corrections:** all 18 tests PASS; TypeScript PASS; repository-wide lint PASS (zero errors/six existing warnings); production build PASS; no dependencies or workflows changed.
+- **Remaining blocked verification:** 200% browser zoom, actual reduced-motion rendering, browser-computed/sampled contrast, a screen-reader smoke test, browser accessibility scan and computed touch-target measurement. This environment's browser cannot access JCA's Windows localhost; no new local-browser result was supplied. Source inspection, calculations and tests do not close these gates.
+
+Only the two affected visual states need an added regression observation: focus a buyer-card discussion CTA and inspect champagne text over the dark highlight. Use the existing four-step local-browser checklist above for the open checks; no new five-width acceptance matrix is requested.
+
+Enquiry implementation assessment: see [enquiry-destination-readiness.md](enquiry-destination-readiness.md). The minimum recommendation is a link to an approved BOS public form, conditional on that destination's readiness; no live URL has been verified or enabled.
+
+Current recommendation: retain PASS WITH CONTROLS for accepted basic responsive/interaction behaviour. Full targeted accessibility acceptance remains HOLD until the listed browser/assistive-technology evidence is returned. The two source corrections require independent review before merge. This is not a comprehensive WCAG conformance claim.
