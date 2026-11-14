@@ -10,7 +10,16 @@ import { OurApproach } from "@/components/landing/OurApproach";
 import { DiscussProject } from "@/components/landing/DiscussProject";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 
+import type { EnquiryContext } from "@/content/enquiry";
+
 export default function App() {
+  const [enquiryContext, setEnquiryContext] = useState<EnquiryContext>({});
+  const beginEnquiry = (context: EnquiryContext) => {
+    setEnquiryContext(context);
+    const heading = document.getElementById("discuss-title");
+    heading?.setAttribute("tabindex", "-1");
+    heading?.focus({ preventScroll: true });
+  };
   const [slide, setSlide] = useState(0);
 
   const openSituation = useCallback((i: number) => {
@@ -33,13 +42,13 @@ export default function App() {
       <SiteHeader />
       <main id="main">
         <Hero />
-        <BuyerCarousel index={slide} onIndexChange={setSlide} />
+        <BuyerCarousel index={slide} onIndexChange={setSlide} onDiscuss={beginEnquiry} />
         <WhoWeHelp onSelect={openSituation} />
-        <Services />
+        <Services onDiscuss={beginEnquiry} />
         <WhyUs />
         <HowWeWork />
         <OurApproach />
-        <DiscussProject />
+        <DiscussProject context={enquiryContext} />
       </main>
       <SiteFooter />
     </div>

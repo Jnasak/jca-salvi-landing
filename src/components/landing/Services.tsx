@@ -9,6 +9,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
+import type { EnquiryContext } from "@/content/enquiry";
+
 const scope: Record<ServiceId, string> = {
   S01: "Map current and future workflows, clarify requirements, responsibilities and handoffs.",
   S02: "Explore user and stakeholder needs, define product requirements and prioritise improvements.",
@@ -20,7 +22,15 @@ const scope: Record<ServiceId, string> = {
   S08: "Assess automation readiness, document processes and review feasibility. AI development and automation implementation are not included automatically.",
 };
 
-function ServiceFlashcard({ category, index }: { category: ServiceCategory; index: number }) {
+function ServiceFlashcard({
+  category,
+  index,
+  onDiscuss,
+}: {
+  category: ServiceCategory;
+  index: number;
+  onDiscuss?: ((context: EnquiryContext) => void) | undefined;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [maximised, setMaximised] = useState(false);
   const [selected, setSelected] = useState<ServiceId | null>(null);
@@ -54,6 +64,7 @@ function ServiceFlashcard({ category, index }: { category: ServiceCategory; inde
               <a
                 href="#discuss"
                 onClick={() => {
+                  onDiscuss?.({ serviceIds: [s.id] });
                   navigatingToDiscuss.current = maximised;
                   setMaximised(false);
                 }}
@@ -140,7 +151,7 @@ function ServiceFlashcard({ category, index }: { category: ServiceCategory; inde
   );
 }
 
-export function Services() {
+export function Services({ onDiscuss }: { onDiscuss?: (context: EnquiryContext) => void }) {
   return (
     <section id="services" aria-labelledby="services-title" className="bg-sage-soft py-20 sm:py-28">
       <div className="container-page">
@@ -152,7 +163,7 @@ export function Services() {
         </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
           {serviceCategories.map((c, ci) => (
-            <ServiceFlashcard key={c.title} category={c} index={ci} />
+            <ServiceFlashcard key={c.title} category={c} index={ci} onDiscuss={onDiscuss} />
           ))}
         </div>
         <p className="mt-8 max-w-3xl text-sm text-evergreen-soft">
