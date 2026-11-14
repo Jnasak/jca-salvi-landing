@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Maximize2, Minus, Plus } from "lucide-react";
 import { serviceCategories, type ServiceId, type ServiceCategory } from "@/content/landing";
 import {
@@ -24,6 +24,7 @@ function ServiceFlashcard({ category, index }: { category: ServiceCategory; inde
   const [expanded, setExpanded] = useState(false);
   const [maximised, setMaximised] = useState(false);
   const [selected, setSelected] = useState<ServiceId | null>(null);
+  const navigatingToDiscuss = useRef(false);
   const panelId = `service-category-${index}`;
   const details = (
     <ul className="mt-6 space-y-3">
@@ -52,7 +53,10 @@ function ServiceFlashcard({ category, index }: { category: ServiceCategory; inde
               <p className="mt-3 text-sm">Scope and deliverables are agreed individually.</p>
               <a
                 href="#discuss"
-                onClick={() => setMaximised(false)}
+                onClick={() => {
+                  navigatingToDiscuss.current = maximised;
+                  setMaximised(false);
+                }}
                 className="mt-4 inline-flex min-h-11 items-center rounded-full bg-evergreen px-5 text-sm font-medium text-cream"
               >
                 Discuss this service
@@ -100,8 +104,20 @@ function ServiceFlashcard({ category, index }: { category: ServiceCategory; inde
                 Maximise<span className="sr-only"> {category.title}</span>
               </button>
             </DialogTrigger>
-            <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-3xl p-6 sm:p-10">
-              <DialogTitle className="pr-8 text-2xl leading-snug sm:text-3xl">
+            <DialogContent
+              onCloseAutoFocus={(event) => {
+                if (navigatingToDiscuss.current) {
+                  event.preventDefault();
+                  navigatingToDiscuss.current = false;
+                  const heading = document.getElementById("discuss-title");
+                  heading?.setAttribute("tabindex", "-1");
+                  heading?.focus({ preventScroll: true });
+                  document.getElementById("discuss")?.scrollIntoView({ block: "start" });
+                }
+              }}
+              className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-3xl p-6 sm:p-10"
+            >
+              <DialogTitle className="pr-12 text-2xl leading-snug sm:text-3xl">
                 {category.title}
               </DialogTitle>
               <DialogDescription className="text-base">{category.summary}</DialogDescription>
