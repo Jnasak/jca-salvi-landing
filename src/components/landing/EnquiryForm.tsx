@@ -60,7 +60,7 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
     }, 350);
   }
   const inputClass =
-    "mt-2 min-h-12 min-w-0 w-full rounded-xl border border-evergreen/40 bg-paper px-3 py-2 text-evergreen";
+    "mt-2 min-h-12 min-w-0 w-full rounded-xl border border-evergreen/60 bg-paper px-3 py-2 text-evergreen";
   const attrs = (key: keyof EnquiryValues) => ({
     id: `enquiry-${key}`,
     name: key,
