@@ -16,7 +16,10 @@ export default function App() {
   const openSituation = useCallback((i: number) => {
     setSlide(i);
     document.getElementById("solutions")?.scrollIntoView({ block: "start" });
-    window.setTimeout(() => document.getElementById(`buyer-tab-${i}`)?.focus({ preventScroll: true }), 50);
+    window.setTimeout(
+      () => document.getElementById(`buyer-tab-${i}`)?.focus({ preventScroll: true }),
+      50,
+    );
   }, []);
 
   return (
@@ -42,4 +45,3 @@ export default function App() {
     </div>
   );
 }
-

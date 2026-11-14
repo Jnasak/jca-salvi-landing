@@ -41,4 +41,3 @@ export function WhoWeHelp({ onSelect }: { onSelect: (i: number) => void }) {
     </section>
   );
 }
-

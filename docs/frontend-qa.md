@@ -1,6 +1,8 @@
 # Mobile navigation and UX verification
 
-Assessment date: 13 November 2026 (Africa/Lagos).
+Assessment updated: 14 November 2026 (Africa/Lagos).
+
+PR #2 reconciled with merged main `928b1688510d9329de0d3f1fd2b902a512919652`. The SiteHeader.tsx and Services.tsx conflicts were formatting overlaps; the frontend focus-management changes were retained. Main supplies the existing dependency/security fixes and quality workflow.
 
 ## Implemented
 
@@ -14,18 +16,22 @@ Assessment date: 13 November 2026 (Africa/Lagos).
 
 ## Executed local checks
 
-| Check                          | Result                                                                               |
-| ------------------------------ | ------------------------------------------------------------------------------------ |
-| `npm test`                     | PASS: 15 tests across 4 files                                                        |
-| `npm run typecheck`            | PASS                                                                                 |
-| `npm run build`                | PASS                                                                                 |
-| ESLint on changed TSX files    | PASS, no diagnostics                                                                 |
-| `git diff --check`             | PASS                                                                                 |
-| Repository-wide `npm run lint` | FAIL: 103 existing formatting errors and 6 Fast Refresh warnings outside this change |
+| Check                                         | Result                                                                      |
+| --------------------------------------------- | --------------------------------------------------------------------------- |
+| `npm ci`                                      | PASS: fresh installation, 443 packages, Node 24.22.1                        |
+| `npm audit --omit=dev --audit-level=moderate` | PASS: zero vulnerabilities                                                  |
+| `npm audit --audit-level=high`                | PASS (exit 0): seven moderate development-tool findings, zero high/critical |
+| `npm test`                                    | PASS: 15 tests across 4 files                                               |
+| `npm run typecheck`                           | PASS                                                                        |
+| `npm run build`                               | PASS                                                                        |
+| ESLint on changed TSX files                   | PASS, no diagnostics                                                        |
+| `git diff --check`                            | PASS                                                                        |
+
+The full audit gate passes at its approved high-severity threshold; it does not mean the development graph is vulnerability-free. The seven moderate findings remain under the existing controls in [dependency-security-triage.md](dependency-security-triage.md).
 
 The five added regression tests cover modal semantics and Escape/return focus, section-selection focus, desktop breakpoint closure, Tab/Shift+Tab containment, and service-modal discussion focus. These are jsdom interaction checks, not browser layout or screen-reader certification.
 
-Local validation reuses dependencies already installed for the separate CI work. It is not evidence of a fresh `npm ci` on this frontend branch. The main-branch lockfile repair, global formatting and CI activation remain tracked separately in PR #1. Reconcile with that work and run CI on the resulting frontend head before accepting this PR.
+These checks ran against the reconciled tree after an ordinary clean `npm ci`; the earlier shared dependency directory was removed first. No dependency, audit threshold, workflow or protection changes were introduced by this reconciliation. GitHub's mandatory `Quality checks` result must be verified separately on the updated PR head. Local success does not establish CI acceptance.
 
 ## Browser evidence: blocked
 

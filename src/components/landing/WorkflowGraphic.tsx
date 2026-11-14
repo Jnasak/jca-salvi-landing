@@ -98,7 +98,11 @@ export function WorkflowGraphic() {
           aria-label={playing ? "Pause workflow animation" : "Play workflow animation"}
           className="inline-flex h-9 items-center gap-1.5 rounded-full border border-evergreen/20 bg-cream px-3 text-xs font-semibold text-evergreen transition-colors hover:border-evergreen"
         >
-          {playing ? <Pause className="size-3.5" aria-hidden="true" /> : <Play className="size-3.5" aria-hidden="true" />}
+          {playing ? (
+            <Pause className="size-3.5" aria-hidden="true" />
+          ) : (
+            <Play className="size-3.5" aria-hidden="true" />
+          )}
           {playing ? "Pause" : "Play"}
         </button>
       </div>
@@ -177,9 +181,7 @@ export function WorkflowGraphic() {
             const on = i === active;
             return (
               <g key={i} style={{ transition: "opacity .5s" }}>
-                {on && (
-                  <circle cx={x} cy={y} r={34} fill="var(--persimmon)" className="wf-pulse" />
-                )}
+                {on && <circle cx={x} cy={y} r={34} fill="var(--persimmon)" className="wf-pulse" />}
                 <circle
                   cx={x}
                   cy={y}
@@ -272,4 +274,3 @@ export function WorkflowGraphic() {
     </div>
   );
 }
-

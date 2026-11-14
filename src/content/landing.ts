@@ -38,7 +38,8 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     title: "Programme & Project Delivery",
-    summary: "Planning, coordination and follow-through so agreed work moves forward and is adopted.",
+    summary:
+      "Planning, coordination and follow-through so agreed work moves forward and is adopted.",
     services: [
       { id: "S03", name: "Programme & Project Delivery" },
       { id: "S05", name: "Implementation Recovery & Operational Adoption" },
@@ -193,14 +194,16 @@ export const workflowStages: WorkflowStage[] = [
     label: "Customer workflows",
     steps: ["Enquiry", "Onboarding", "Follow-up"],
     note: "Seeing where information is repeated or lost between steps.",
-    summary: "Enquiries, onboarding and follow-ups that repeat work or lose context between people.",
+    summary:
+      "Enquiries, onboarding and follow-ups that repeat work or lose context between people.",
   },
   {
     id: "product",
     label: "Product clarity",
     steps: ["Problem", "Requirements", "Priorities"],
     note: "Turning open questions into a clear, agreed brief.",
-    summary: "Open questions about the problem, requirements and priorities, shaped into an agreed brief.",
+    summary:
+      "Open questions about the problem, requirements and priorities, shaped into an agreed brief.",
   },
   {
     id: "delivery",
@@ -247,4 +250,3 @@ export const approachSteps = [
     body: "Help people use the change in day-to-day work.",
   },
 ];
-
