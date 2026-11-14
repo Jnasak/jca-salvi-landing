@@ -24,34 +24,53 @@ PR #2 reconciled with merged main `928b1688510d9329de0d3f1fd2b902a512919652`. Th
 | `npm test`                                    | PASS: 15 tests across 4 files                                               |
 | `npm run typecheck`                           | PASS                                                                        |
 | `npm run build`                               | PASS                                                                        |
-| ESLint on changed TSX files                   | PASS, no diagnostics                                                        |
+| Repository-wide `npm run lint`                | PASS: zero errors and six existing Fast Refresh warnings                    |
 | `git diff --check`                            | PASS                                                                        |
 
 The full audit gate passes at its approved high-severity threshold; it does not mean the development graph is vulnerability-free. The seven moderate findings remain under the existing controls in [dependency-security-triage.md](dependency-security-triage.md).
 
 The five added regression tests cover modal semantics and Escape/return focus, section-selection focus, desktop breakpoint closure, Tab/Shift+Tab containment, and service-modal discussion focus. These are jsdom interaction checks, not browser layout or screen-reader certification.
 
-These checks ran against the reconciled tree after an ordinary clean `npm ci`; the earlier shared dependency directory was removed first. No dependency, audit threshold, workflow or protection changes were introduced by this reconciliation. GitHub's mandatory `Quality checks` result must be verified separately on the updated PR head. Local success does not establish CI acceptance.
+These checks ran against the reconciled tree after an ordinary clean `npm ci`; the earlier shared dependency directory was removed first. No dependency, audit threshold, workflow or protection changes were introduced by this reconciliation. GitHub's mandatory `Quality checks` also passed on tested commit `5db6ea9c9a1e4650119fcdc294f7e9fd92f68cec`: [run 43572759472, job 132380487667](https://github.com/Jnasak/jca-salvi-landing/actions/runs/43572759472/job/132380487667). A subsequent documentation-only evidence update requires its own current-head CI result; the browser-tested application SHA remains unchanged.
 
-## Browser evidence: blocked
+## JCA-reported local browser acceptance
 
-A Vite server started successfully at `http://127.0.0.1:4173/`. The available remote Chromium browser returned `net::ERR_CONNECTION_REFUSED` for that address. Native desktop input also failed with an unavailable AT-SPI provider. No responsive screenshots or browser accessibility results are claimed. No preview was published to work around this limitation.
+- Tested commit: `5db6ea9c9a1e4650119fcdc294f7e9fd92f68cec`.
+- Test date reported: 14 November 2026 (Africa/Lagos); exact execution time not supplied.
+- Tester: JCA, using the recovered Windows checkout on `test/pr2-browser-qa` at `http://127.0.0.1:5173/`.
+- Evidence source: JCA's “All pass” confirmation after the guided browser checklist, subsequently accepted by AY as PASS WITH CONTROLS for basic responsive and interaction acceptance.
+- Attribution: user-reported browser results, not independently observed by AAY1. No landing-page screenshots, console export or automated accessibility report were supplied with this confirmation. Browser version and exact viewport heights were not recorded.
 
-## Browser checks still required
+| Reported check                              | Result                                                                                                                             |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 320px mobile navigation                     | PASS — JCA reported                                                                                                                |
+| 390px mobile navigation                     | PASS — JCA reported                                                                                                                |
+| 768px tablet navigation                     | PASS — JCA reported                                                                                                                |
+| 1024px desktop navigation                   | PASS — JCA reported                                                                                                                |
+| 1440px desktop navigation                   | PASS — JCA reported                                                                                                                |
+| Keyboard navigation and menu focus          | PASS — JCA reported Tab, Shift+Tab, Escape, containment/restoration and desktop resize dismissal                                   |
+| Service interactions and section navigation | PASS — JCA reported expand/maximise/minimise, discussion destination focus, sticky-header alignment and responsive overflow checks |
+| Browser console inspection                  | PASS — JCA reported no failures in the guided inspection; no console export supplied                                               |
 
-Run these against an accessible local checkout or a separately authorised preview; record the commit and screenshots with the results.
+Basic responsive and interaction acceptance is now PASS WITH CONTROLS. No new frontend defect or correction was reported in this browser session. The earlier remote-browser localhost connection failure remains a limitation of AAY1's own browser environment; it does not invalidate JCA's successful local checks.
 
-| Viewport                  | Required observations                                                                                                                                |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 320 × 568 and 390 × 844   | Logo/menu fit, no horizontal overflow, drawer fully usable with scrolling, target heading visible after section selection                            |
-| 768 × 1024                | Tablet menu and CTA fit; resize with drawer open to 1024px                                                                                           |
-| 1024 × 768 and 1440 × 900 | Desktop navigation visible; mobile trigger hidden; no trapped focus or remaining backdrop                                                            |
-| All                       | Keyboard Tab/Shift+Tab/Escape; visible focus; service maximise/minimise and CTA; carousel arrows/Home/End; workflow pause; 200% zoom; reduced motion |
+The controls above do not establish comprehensive accessibility conformance or measured touch-target sizes. The authored target sizes are documented under Implemented; computed dimensions still need verification.
 
-Also run a browser accessibility scan, verify computed contrast and touch targets, inspect console errors, and smoke-test with a screen reader. Automated unit tests alone do not establish WCAG conformance.
+## Remaining accessibility checks
+
+These are PENDING, not covered by the eight reported checks. Record the exact tested application SHA, browser, assistive-technology version where applicable, results and defects.
+
+| Check                                           | Acceptance observations                                                                                                                                                   | Owner                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 200% browser zoom                               | Text, navigation, drawers and service dialogs remain readable and operable without clipping or lost controls; focus stays visible                                         | AAY1 with JCA local execution |
+| Reduced motion                                  | Enable the operating-system/browser preference and reload; workflow starts paused, decorative motion stops, and navigation remains usable                                 | AAY1 with JCA local execution |
+| Computed contrast                               | Measure normal text, large text, controls and focus indicators across light/dark sections and hover/focus states; verify applicable WCAG AA thresholds                    | AAY1                          |
+| Screen-reader behaviour                         | Check landmarks, heading order, menu name/state, modal announcements, tab selection, inactive carousel content and focus restoration with a real screen reader            | AAY1 with JCA local execution |
+| Browser accessibility scan                      | Review actual browser findings and manually validate them; automated results alone do not establish conformance                                                           | AAY1                          |
+| Touch targets and remaining interactive widgets | Verify computed target sizes; explicitly exercise carousel Arrow/Home/End navigation and workflow pause/resume, which were not individually recorded in the latest return | AAY1 with JCA local execution |
 
 ## Remaining product dependencies
 
 The discussion destination still explicitly reports that its live enquiry connection is unavailable. BOS integration and approved contact destinations are required to complete live conversion. This navigation change does not create an enquiry database or transmit lead data. Approved partner photographs and release approvals remain separate dependencies.
 
-Recommendation: frontend changes are ready for independent code review with controls. Responsive visual acceptance and browser accessibility verification remain pending. No preview or production release clearance is implied.
+Recommendation: PASS WITH CONTROLS for basic responsive and interaction acceptance on the exact browser-tested SHA. Remaining accessibility checks and independent PR review are pending. Enquiry integration and eligible commercial hosting remain separate release dependencies. No merge, preview or production release clearance is implied.
