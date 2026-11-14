@@ -4,15 +4,18 @@ import { Button } from "@/components/ui/button";
 import { buyerSituations, serviceById } from "@/content/landing";
 import { cn } from "@/lib/utils";
 
+import type { EnquiryContext } from "@/content/enquiry";
+
 const pad = (n: number) => String(n).padStart(2, "0");
 
 interface Props {
   index: number;
+  onDiscuss?: (context: EnquiryContext) => void;
   onIndexChange: (i: number) => void;
 }
 
 /** Manually navigated (never auto-rotating) carousel of illustrative buyer situations. */
-export function BuyerCarousel({ index, onIndexChange }: Props) {
+export function BuyerCarousel({ index, onIndexChange, onDiscuss }: Props) {
   const total = buyerSituations.length;
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const touchX = useRef<number | null>(null);
@@ -198,7 +201,16 @@ export function BuyerCarousel({ index, onIndexChange }: Props) {
                         </ul>
                         <div className="mt-auto pt-8">
                           <Button asChild variant="hero" size="xl" className="w-full sm:w-auto">
-                            <a href="#discuss">
+                            <a
+                              href="#discuss"
+                              onClick={() =>
+                                onDiscuss?.({
+                                  segment: s.segment,
+                                  problem: s.problem,
+                                  serviceIds: s.serviceIds,
+                                })
+                              }
+                            >
                               {s.cta}
                               <ArrowRight aria-hidden="true" />
                             </a>
