@@ -77,7 +77,7 @@
 :root {
   --radius: 0.875rem;
 
-  --cream: oklch(0.9848 0.0113 71.9);
+  --cream: #FCF8F5;
   --cream-deep: oklch(0.9411 0.0176 73.07);
   --paper: oklch(0.9945 0.0057 84.57);
   --evergreen: oklch(0.3694 0.0495 167.01);
