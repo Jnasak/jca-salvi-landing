@@ -1,13 +1,8 @@
 import { useRef, useState } from "react";
-import { Maximize2, Minus, Plus } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Check, GitBranch } from "lucide-react";
 import { serviceCategories, type ServiceId, type ServiceCategory } from "@/content/landing";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import type { EnquiryContext } from "@/content/enquiry";
+import { useServiceStack } from "@/components/landing/useServiceStack";
 
 const scope: Record<ServiceId, string> = {
   S01: "Map current and future workflows, clarify requirements, responsibilities and handoffs.",
@@ -20,139 +15,168 @@ const scope: Record<ServiceId, string> = {
   S08: "Assess automation readiness, document processes and review feasibility. AI development and automation implementation are not included automatically.",
 };
 
-function ServiceFlashcard({ category, index }: { category: ServiceCategory; index: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const [maximised, setMaximised] = useState(false);
-  const [selected, setSelected] = useState<ServiceId | null>(null);
-  const navigatingToDiscuss = useRef(false);
-  const panelId = `service-category-${index}`;
-  const details = (
-    <ul className="mt-6 space-y-3">
-      {category.services.map((s) => (
-        <li key={s.id} className="rounded-2xl border border-evergreen/15 bg-cream p-4">
-          <button
-            type="button"
-            className="flex min-h-11 w-full items-center justify-between gap-3 text-left font-medium"
-            aria-expanded={selected === s.id}
-            aria-controls={`detail-${index}-${s.id}`}
-            onClick={() => setSelected(selected === s.id ? null : s.id)}
-          >
-            <span>
-              <span className="mr-2 text-xs text-evergreen-soft">{s.id}</span>
-              {s.name}
-            </span>
-            {selected === s.id ? (
-              <Minus aria-hidden="true" size={18} />
-            ) : (
-              <Plus aria-hidden="true" size={18} />
-            )}
-          </button>
-          {selected === s.id && (
-            <div id={`detail-${index}-${s.id}`} className="pt-3">
-              <p className="leading-relaxed text-evergreen-soft">{scope[s.id]}</p>
-              <p className="mt-3 text-sm">Scope and deliverables are agreed individually.</p>
-              <a
-                href="#discuss"
-                onClick={() => {
-                  navigatingToDiscuss.current = maximised;
-                  setMaximised(false);
-                }}
-                className="mt-4 inline-flex min-h-11 items-center rounded-full bg-evergreen px-5 text-sm font-medium text-cream"
-              >
-                Discuss this service
-              </a>
-              <p className="mt-2 text-xs text-evergreen-soft">
-                Prototype only — live enquiry connection pending.
-              </p>
-            </div>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
+const visualStages = [
+  ["Current workflow", "Handoffs", "Improvement"],
+  ["Problem", "Requirements", "Delivery scope"],
+  ["Plan", "Owners", "Follow-through"],
+];
+
+function ServicePanel({
+  category,
+  index,
+  selected,
+  onSelect,
+  onDiscuss,
+}: {
+  category: ServiceCategory;
+  index: number;
+  selected: ServiceId;
+  onSelect: (id: ServiceId) => void;
+  onDiscuss?: ((context: EnquiryContext) => void) | undefined;
+}) {
+  const service = category.services.find((item) => item.id === selected)!;
+  const titleId = `service-category-title-${index}`;
   return (
-    <article className="flex min-w-0 flex-col self-start rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft sm:p-8">
-      <p className="text-sm text-evergreen-soft">
-        0{index + 1} · {category.services.length} service types
-      </p>
-      <h3 className="mt-4 text-2xl font-semibold leading-snug">{category.title}</h3>
-      <p className="mt-3 leading-relaxed text-evergreen-soft">{category.summary}</p>
-      <div className="mt-6 flex flex-wrap gap-2">
-        <button
-          type="button"
-          aria-expanded={expanded}
-          aria-controls={panelId}
-          onClick={() => setExpanded(!expanded)}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-evergreen/30 px-4 text-sm font-medium"
-        >
-          {expanded ? (
-            <Minus aria-hidden="true" size={16} />
-          ) : (
-            <Plus aria-hidden="true" size={16} />
-          )}
-          {expanded ? "Minimise" : "Expand"}
-          <span className="sr-only"> {category.title}</span>
-        </button>
-        {expanded && (
-          <Dialog open={maximised} onOpenChange={setMaximised}>
-            <DialogTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-evergreen px-4 text-sm font-medium text-cream"
-              >
-                <Maximize2 aria-hidden="true" size={16} />
-                Maximise<span className="sr-only"> {category.title}</span>
-              </button>
-            </DialogTrigger>
-            <DialogContent
-              onCloseAutoFocus={(event) => {
-                if (navigatingToDiscuss.current) {
-                  event.preventDefault();
-                  navigatingToDiscuss.current = false;
-                  const heading = document.getElementById("discuss-title");
-                  heading?.setAttribute("tabindex", "-1");
-                  heading?.focus({ preventScroll: true });
-                  document.getElementById("discuss")?.scrollIntoView({ block: "start" });
-                }
-              }}
-              className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-3xl p-6 sm:p-10"
+    <article
+      id={`service-category-${index}`}
+      aria-labelledby={titleId}
+      className="service-stack-card"
+    >
+      <div className="service-stack-copy">
+        <p className="eyebrow text-evergreen-soft">
+          0{index + 1} / Service Category · {category.services.length} Service Types
+        </p>
+        <h3 id={titleId} className="mt-5 text-3xl font-medium leading-tight sm:text-4xl">
+          {category.title}
+        </h3>
+        <p className="mt-4 leading-relaxed text-evergreen-soft">{category.summary}</p>
+        <div className="service-type-list" role="group" aria-label={`${category.title} services`}>
+          {category.services.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              aria-pressed={selected === item.id}
+              aria-controls={`service-scope-${index}`}
+              onClick={() => onSelect(item.id)}
+              className="service-type-control"
             >
-              <DialogTitle className="pr-12 text-2xl leading-snug sm:text-3xl">
-                {category.title}
-              </DialogTitle>
-              <DialogDescription className="text-base">{category.summary}</DialogDescription>
-              {details}
-              <button
-                type="button"
-                onClick={() => setMaximised(false)}
-                className="min-h-11 rounded-full border border-evergreen/30 px-5 text-sm font-medium"
-              >
-                Minimise to card
-              </button>
-            </DialogContent>
-          </Dialog>
-        )}
+              <span className="service-type-id">{item.id}</span>
+              <span className="min-w-0 flex-1">{item.name}</span>
+              {selected === item.id ? (
+                <Check aria-hidden="true" size={18} className="shrink-0" />
+              ) : (
+                <ArrowUpRight aria-hidden="true" size={18} className="shrink-0" />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
-      <div id={panelId} hidden={!expanded}>
-        {expanded && !maximised && details}
+      <div className="service-stack-visual">
+        <div className="flex items-center justify-between gap-3 text-sm text-evergreen-soft">
+          <span>Illustrative approach</span>
+          <GitBranch aria-hidden="true" size={23} />
+        </div>
+        <div className="service-workflow" aria-label="Illustrative workflow, not client data">
+          {visualStages[index]!.map((stage, stageIndex) => (
+            <div key={stage} className="service-workflow-stage">
+              <span className="text-xs text-evergreen-soft">0{stageIndex + 1}</span>
+              <span>{stage}</span>
+              {stageIndex < 2 && <ArrowDown aria-hidden="true" size={16} />}
+            </div>
+          ))}
+        </div>
+        <div id={`service-scope-${index}`} className="service-selected-scope" aria-live="polite">
+          <p className="eyebrow text-evergreen-soft">Selected Service Type / {selected}</p>
+          <h4 className="mt-3 text-2xl font-medium leading-snug">{service.name}</h4>
+          <p className="mt-3 leading-relaxed text-evergreen-soft">{scope[selected]}</p>
+          <p className="mt-3 text-sm">Scope and deliverables are agreed individually.</p>
+        </div>
+        <a
+          href="#discuss"
+          onClick={(event) => {
+            event.preventDefault();
+            onDiscuss?.({ serviceIds: [selected] });
+            const heading = document.getElementById("discuss-title");
+            heading?.setAttribute("tabindex", "-1");
+            heading?.focus({ preventScroll: true });
+            document.getElementById("discuss")?.scrollIntoView({ block: "start" });
+          }}
+          className="inline-flex min-h-11 w-fit items-center gap-3 rounded-full bg-evergreen px-5 py-3 text-sm font-medium text-cream"
+        >
+          Discuss this service <ArrowUpRight aria-hidden="true" size={18} />
+        </a>
+        <p className="text-xs text-evergreen-soft">
+          Demo enquiry only — nothing is sent or stored.
+        </p>
       </div>
     </article>
   );
 }
 
-export function Services() {
+export function Services({ onDiscuss }: { onDiscuss?: (context: EnquiryContext) => void }) {
+  const stackRef = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState<ServiceId[]>(
+    serviceCategories.map((category) => category.services[0]!.id),
+  );
+  const canStack = useServiceStack(stackRef, selected);
+  function select(index: number, id: ServiceId) {
+    setSelected((previous) => previous.map((value, i) => (i === index ? id : value)));
+  }
   return (
     <section id="services" aria-labelledby="services-title" className="bg-sage-soft py-20 sm:py-28">
       <div className="container-page">
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           <p className="eyebrow text-evergreen-soft">What We Help With</p>
           <h2 id="services-title" className="mt-4 text-4xl font-medium sm:text-5xl">
             Eight services, three clear areas of focus.
           </h2>
+          <p className="mt-5 text-lg text-evergreen-soft">
+            See the full offer, then explore the support relevant to your challenge.
+          </p>
         </div>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {serviceCategories.map((c, ci) => (
-            <ServiceFlashcard key={c.title} category={c} index={ci} />
+        <nav aria-label="All eight Service Types" className="service-overview">
+          {serviceCategories.flatMap((category, index) =>
+            category.services.map((service) => (
+              <a
+                key={service.id}
+                href={`#service-category-${index}`}
+                onClick={() => {
+                  select(index, service.id);
+                  // Focus a native control so keyboard users reach the chosen details directly.
+                  window.requestAnimationFrame(() => {
+                    const card = document.getElementById(`service-category-${index}`);
+                    const button = card?.querySelector<HTMLButtonElement>(
+                      `button[aria-pressed="true"]`,
+                    );
+                    button?.focus({ preventScroll: true });
+                    card?.scrollIntoView({ block: "start" });
+                  });
+                }}
+              >
+                <span className="service-type-id">{service.id}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-medium">{service.name}</span>
+                  <span className="mt-1 block text-sm text-evergreen-soft">{category.title}</span>
+                </span>
+                <ArrowUpRight aria-hidden="true" size={18} className="shrink-0" />
+              </a>
+            )),
+          )}
+        </nav>
+        <div
+          ref={stackRef}
+          className="service-stack"
+          data-stacking={canStack ? "enabled" : "disabled"}
+        >
+          {serviceCategories.map((category, index) => (
+            <ServicePanel
+              key={category.title}
+              category={category}
+              index={index}
+              selected={selected[index]!}
+              onSelect={(id) => select(index, id)}
+              onDiscuss={onDiscuss}
+            />
           ))}
         </div>
         <p className="mt-8 max-w-3xl text-sm text-evergreen-soft">

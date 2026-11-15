@@ -133,7 +133,7 @@
     radial-gradient(120% 80% at 85% 10%, var(--sage-soft) 0%, transparent 55%),
     radial-gradient(70% 60% at 0% 100%, oklch(0.9411 0.0176 73.07 / 0.9) 0%, transparent 60%);
   --gradient-evergreen:
-    radial-gradient(90% 70% at 100% 0%, oklch(0.42 0.05 165) 0%, transparent 60%),
+    radial-gradient(90% 70% at 100% 0%, oklch(0.4 0.05 165) 0%, transparent 60%),
     linear-gradient(180deg, var(--evergreen) 0%, var(--evergreen-deep) 100%);
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -184,6 +184,11 @@
 
   .on-dark :focus-visible {
     outline-color: var(--champagne);
+  }
+
+  /* Light cards nested in dark sections need a dark focus indicator. */
+  .on-dark .on-light :focus-visible {
+    outline-color: var(--evergreen);
   }
 
   ::selection {
@@ -416,5 +421,269 @@ main section[id],
   main section[id],
   #main {
     scroll-margin-top: 6.5rem;
+  }
+}
+
+/* Service discovery: native scroll first; no fixed-height content, timers or scroll handlers. */
+.service-overview {
+  display: grid;
+  gap: 0 2rem;
+  margin: 2.5rem 0 3rem;
+}
+.service-overview > a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 4.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--evergreen-soft);
+}
+.service-type-id {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--sage);
+  color: var(--evergreen);
+  font-size: 0.75rem;
+}
+.service-stack {
+  display: grid;
+  gap: 2rem;
+  position: relative;
+}
+.service-stack-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  border: 1px solid var(--evergreen-soft);
+  border-radius: 1.5rem;
+  background: var(--paper);
+  scroll-margin-top: 7rem;
+}
+.service-stack-copy {
+  padding: 1.5rem;
+  min-width: 0;
+}
+.service-type-list {
+  display: grid;
+  margin-top: 1.5rem;
+}
+.service-type-control {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.85rem 0.25rem;
+  border-top: 1px solid var(--evergreen-soft);
+  text-align: left;
+  line-height: 1.5;
+}
+.service-type-control[aria-pressed="true"] {
+  font-weight: 600;
+}
+.service-type-control[aria-pressed="true"] .service-type-id {
+  color: var(--cream);
+  background: var(--evergreen);
+}
+.service-stack-visual {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: var(--sage);
+}
+.service-workflow {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--evergreen-soft);
+  border-radius: 1rem;
+  background: var(--paper);
+}
+.service-workflow-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2rem;
+  font-size: 0.875rem;
+}
+.service-workflow-stage > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.service-selected-scope {
+  flex: 1;
+}
+.benefits-shell {
+  position: relative;
+  isolation: isolate;
+  border-radius: 1.5rem;
+  background: var(--evergreen);
+  color: var(--cream);
+  padding: 3.5rem 1.5rem 1.5rem;
+}
+.benefits-shell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 65%;
+  height: 1.25rem;
+  background: var(--cream);
+  border-bottom-left-radius: 1.5rem;
+}
+.benefits-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.benefits-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--cream);
+  border-radius: 999px;
+  color: var(--cream);
+}
+.benefits-cta:focus-visible {
+  outline-color: var(--champagne);
+}
+.benefits-grid {
+  display: grid;
+  gap: 1rem;
+}
+.benefit-card {
+  position: relative;
+  isolation: isolate;
+  padding: 1.75rem 1.5rem;
+  border-radius: 1.25rem;
+  color: var(--evergreen);
+}
+.benefit-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--paper);
+}
+@supports (mask-image: radial-gradient(circle, black, transparent)) {
+  .benefit-card::before {
+    mask-image: radial-gradient(circle at 100% 0, transparent 1.3rem, black 1.35rem);
+  }
+}
+.benefit-number {
+  position: absolute;
+  top: -0.45rem;
+  right: -0.3rem;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  color: var(--evergreen);
+  background: var(--champagne);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+@keyframes benefit-arrive {
+  from {
+    opacity: 0.65;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.benefit-enter {
+  animation: benefit-arrive 350ms ease-out both;
+}
+@media (min-width: 640px) {
+  .service-stack-copy,
+  .service-stack-visual {
+    padding: 2rem;
+  }
+  .benefits-shell {
+    padding: 4rem 2rem 2rem;
+  }
+}
+@media (min-width: 768px) {
+  .service-overview,
+  .benefits-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .service-stack-card {
+    grid-template-columns: 0.95fr 1.05fr;
+  }
+}
+@media (min-width: 1024px) {
+  .service-stack[data-stacking="enabled"] .service-stack-card {
+    position: sticky;
+    top: 7rem;
+  }
+  .service-stack[data-stacking="enabled"] .service-stack-card:nth-child(2) {
+    top: calc(7rem + 18px);
+  }
+  .service-stack[data-stacking="enabled"] .service-stack-card:nth-child(3) {
+    top: calc(7rem + 36px);
+  }
+  .service-stack[data-stacking="enabled"]:focus-within .service-stack-card {
+    position: relative;
+    top: auto;
+  }
+  .service-stack-card:nth-child(1) {
+    z-index: 1;
+  }
+  .service-stack-card:nth-child(2) {
+    z-index: 2;
+  }
+  .service-stack-card:nth-child(3) {
+    z-index: 3;
+  }
+  .benefits-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+  .benefits-heading {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .benefit-card {
+    transition: transform 160ms ease;
+  }
+  .benefit-card:hover {
+    transform: translateY(-3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-stack .service-stack-card {
+    position: relative !important;
+    top: auto !important;
+  }
+  .benefit-enter {
+    animation: none;
+  }
+  .benefit-card {
+    transition: none;
+    transform: none;
   }
 }

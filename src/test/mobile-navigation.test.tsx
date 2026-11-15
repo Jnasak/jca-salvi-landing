@@ -78,7 +78,7 @@ it("keeps focus inside the modal when tabbing past its last or first control", (
   expect(cta).toHaveFocus();
 });
 
-it("moves focus from a maximised service to the project discussion heading", async () => {
+it("moves focus from the selected service to the project discussion heading", async () => {
   const scroll = vi.fn();
   render(
     <>
@@ -89,12 +89,8 @@ it("moves focus from a maximised service to the project discussion heading", asy
     </>,
   );
   document.getElementById("discuss")!.scrollIntoView = scroll;
-  fireEvent.click(screen.getByRole("button", { name: /^Expand Business/ }));
   fireEvent.click(screen.getByRole("button", { name: /^S08/ }));
-  fireEvent.click(screen.getByRole("button", { name: /^Maximise Business/ }));
-  fireEvent.click(
-    within(screen.getByRole("dialog")).getByRole("link", { name: "Discuss this service" }),
-  );
+  fireEvent.click(screen.getAllByRole("link", { name: "Discuss this service" })[0]!);
   await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
   await waitFor(() =>
     expect(screen.getByRole("heading", { name: "Discuss a project" })).toHaveFocus(),
