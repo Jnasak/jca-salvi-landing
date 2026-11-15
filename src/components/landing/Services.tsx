@@ -80,7 +80,11 @@ function ServiceFlashcard({
     </ul>
   );
   return (
-    <article className="flex min-w-0 flex-col self-start rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft sm:p-8">
+    <article
+      id={`service-detail-${index}`}
+      data-expanded={expanded}
+      className="service-stack-card flex min-w-0 flex-col rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft sm:p-8"
+    >
       <p className="text-sm text-evergreen-soft">
         0{index + 1} · {category.services.length} service types
       </p>
@@ -163,14 +167,38 @@ export function Services({
             Eight services, three clear areas of focus.
           </h2>
         </div>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        <nav aria-label="Choose a service category" className="mt-12 grid gap-4 lg:grid-cols-3">
+          {serviceCategories.map((category, index) => (
+            <a
+              key={category.title}
+              href={`#service-detail-${index}`}
+              className="flex min-h-36 flex-col justify-between rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft transition-colors hover:bg-cream"
+            >
+              <span className="eyebrow text-evergreen-soft">
+                0{index + 1} · {category.services.length} service types
+              </span>
+              <span className="mt-5 font-display text-xl font-semibold">
+                {category.title}
+              </span>
+            </a>
+          ))}
+        </nav>
+        <div className="mt-12 max-w-4xl">
+          <p className="eyebrow text-evergreen-soft">Service details</p>
+          <p className="mt-2 text-sm text-evergreen-soft">
+            Scroll through the categories, or expand any service for its scope.
+            On smaller screens, the cards follow the normal page flow.
+          </p>
+        </div>
+        <div className="service-stack-list mt-7">
           {serviceCategories.map((c, ci) => (
-            <ServiceFlashcard
-              key={c.title}
-              category={c}
-              index={ci}
-              onDiscussService={onDiscussService}
-            />
+            <div key={c.title} className="service-stack-slot">
+              <ServiceFlashcard
+                category={c}
+                index={ci}
+                onDiscussService={onDiscussService}
+              />
+            </div>
           ))}
         </div>
         <p className="mt-8 max-w-3xl text-sm text-evergreen-soft">
