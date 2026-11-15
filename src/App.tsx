@@ -15,9 +15,10 @@ import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function App() {
   const [slide, setSlide] = useState(0);
-  const [enquiryContext, setEnquiryContext] = useState<{ situation?: string; service?: ServiceId | undefined }>(
-    {},
-  );
+  const [enquiryContext, setEnquiryContext] = useState<{
+    situation?: string;
+    service?: ServiceId | undefined;
+  }>({});
 
   const openSituation = useCallback((i: number) => {
     setSlide(i);
