@@ -20,7 +20,15 @@ const scope: Record<ServiceId, string> = {
   S08: "Assess automation readiness, document processes and review feasibility. AI development and automation implementation are not included automatically.",
 };
 
-function ServiceFlashcard({ category, index, onDiscussService }: { category: ServiceCategory; index: number; onDiscussService?: (service: ServiceId) => void }) {
+function ServiceFlashcard({
+  category,
+  index,
+  onDiscussService,
+}: {
+  category: ServiceCategory;
+  index: number;
+  onDiscussService?: (service: ServiceId) => void;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [maximised, setMaximised] = useState(false);
   const [selected, setSelected] = useState<ServiceId | null>(null);
@@ -141,7 +149,11 @@ function ServiceFlashcard({ category, index, onDiscussService }: { category: Ser
   );
 }
 
-export function Services({ onDiscussService }: { onDiscussService?: (service: ServiceId) => void }) {
+export function Services({
+  onDiscussService,
+}: {
+  onDiscussService?: (service: ServiceId) => void;
+}) {
   return (
     <section id="services" aria-labelledby="services-title" className="bg-sage-soft py-20 sm:py-28">
       <div className="container-page">
@@ -153,7 +165,12 @@ export function Services({ onDiscussService }: { onDiscussService?: (service: Se
         </div>
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
           {serviceCategories.map((c, ci) => (
-            <ServiceFlashcard key={c.title} category={c} index={ci} onDiscussService={onDiscussService} />
+            <ServiceFlashcard
+              key={c.title}
+              category={c}
+              index={ci}
+              onDiscussService={onDiscussService}
+            />
           ))}
         </div>
         <p className="mt-8 max-w-3xl text-sm text-evergreen-soft">
