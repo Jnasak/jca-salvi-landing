@@ -148,14 +148,14 @@ export const buyerSituations: BuyerSituation[] = [
 
 export const heroCopy = {
   eyebrow: "Business, Product & Operations Delivery Partners",
-  headline: "Your business is growing. Let's make the way it works even better.",
+  headline: "Business Challenges Deserve Practical Solutions.",
   /**
    * Intentional line breaks (shown from small tablets up), grouped by sentence.
    * Joined with spaces they equal `headline`. The final line carries the single persimmon rule.
    */
   headlineSentences: [
-    ["Your business", "is growing."],
-    ["Let's make", "the way it works", "even better."],
+    ["Business Challenges", "Deserve Practical"],
+    ["Solutions."],
   ],
   supporting:
     "We help growing teams untangle workflows, clarify product needs and coordinate delivery — with practical solutions scoped around your business.",
