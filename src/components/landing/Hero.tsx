@@ -82,9 +82,7 @@ export function Hero() {
             aria-label="Three editorial service stories"
             className="rounded-3xl border border-evergreen/15 bg-paper p-4 shadow-soft sm:p-6"
           >
-            <div
-              className="relative overflow-hidden rounded-3xl border border-evergreen/10 bg-cream-deep p-5 sm:p-7"
-            >
+            <div className="relative overflow-hidden rounded-3xl border border-evergreen/10 bg-cream-deep p-5 sm:p-7">
               <div
                 className="pointer-events-none absolute inset-0 opacity-60 transition-colors duration-300"
                 style={{
