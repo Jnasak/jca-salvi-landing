@@ -1,54 +1,83 @@
-const clarity = ["Business analysis", "Product thinking"];
-const coordination = ["Customer experience", "Operations", "Delivery coordination"];
+import { useEffect, useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 
-function BrandCross({ className }: { className?: string }) {
-  // Decorative cross echoing the logo's ×, persimmon used decoratively only.
-  return (
-    <svg viewBox="396 60 56 56" className={className} aria-hidden="true" focusable="false">
-      <path
-        fill="var(--persimmon)"
-        d="M441.22 60.28 424.45 77.05 407.68 60.28 396.76 71.33 413.53 87.97 396.89 104.61 407.81 115.53 424.45 98.89 441.09 115.66 452.01 104.74 435.37 87.97 452.14 71.2Z"
-      />
-    </svg>
-  );
-}
+// Reorganises the existing capability statement; no new outcome or client claims.
+const benefits = [
+  {
+    title: "Business analysis",
+    body: "Understand the current situation and clarify the business need before shaping the work.",
+  },
+  {
+    title: "Product thinking",
+    body: "Connect product problems, stakeholder requirements and priorities to a practical scope.",
+  },
+  {
+    title: "Customer experience",
+    body: "Consider customer journeys, onboarding, follow-up and the handoffs between people.",
+  },
+  {
+    title: "Operations",
+    body: "Look at how the work happens day to day and where a clearer workflow could help.",
+  },
+  {
+    title: "Delivery coordination",
+    body: "Bring attention to ownership, dependencies and follow-through within the agreed work.",
+  },
+  {
+    title: "Clearly agreed scope",
+    body: "Agree responsibilities and deliverables for each project. Technical delivery requires appropriately scoped capability or partnerships.",
+  },
+];
 
 export function WhyUs() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid || typeof IntersectionObserver === "undefined") return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          // Content is visible before observation and if JavaScript/animations are unavailable.
+          if (!reduce.matches) entry.target.classList.add("benefit-enter");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 },
+    );
+    Array.from(grid.children).forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
   return (
-    <section id="why" aria-labelledby="why-title" className="py-20 sm:py-28">
-      <div className="container-page grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div>
-          <p className="eyebrow text-evergreen-soft">Why JCA × Salvi</p>
-          <h2 id="why-title" className="mt-4 text-4xl font-medium sm:text-5xl">
-            Business clarity meets practical coordination.
-          </h2>
-          <p className="mt-6 max-w-xl text-lg">
-            We are independent professionals combining business analysis and product thinking with
-            customer experience, operations and delivery coordination.
-          </p>
-          <p className="mt-6 inline-flex items-center gap-3 rounded-full border border-evergreen/15 bg-paper px-4 py-2 text-sm font-semibold">
-            <span aria-hidden="true" className="size-2 rounded-full bg-champagne" />
-            Scope and responsibilities agreed for each project.
-          </p>
-        </div>
-
-        <div className="relative grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-          <div className="rounded-3xl bg-sage p-7">
-            <p className="eyebrow text-evergreen">Business clarity</p>
-            <ul className="mt-4 space-y-2 font-display text-xl">
-              {clarity.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
+    <section id="why" aria-labelledby="why-title" className="benefits-section py-16 sm:py-24">
+      <div className="container-page">
+        <div className="benefits-shell">
+          <div className="benefits-heading">
+            <div>
+              <p className="eyebrow text-champagne">Why JCA × Salvi</p>
+              <h2 id="why-title" className="mt-4 max-w-2xl text-4xl font-medium sm:text-5xl">
+                Business clarity meets practical coordination.
+              </h2>
+              <p className="mt-5 max-w-2xl leading-relaxed">
+                We are independent professionals combining business analysis and product thinking
+                with customer experience, operations and delivery coordination.
+              </p>
+            </div>
+            <a href="#discuss" className="benefits-cta">
+              Discuss Your Project <ArrowUpRight aria-hidden="true" size={18} />
+            </a>
           </div>
-          <BrandCross className="mx-auto size-8 sm:size-10" />
-          <div className="on-dark bg-evergreen-rich rounded-3xl p-7 text-cream">
-            <p className="eyebrow text-champagne">Practical coordination</p>
-            <ul className="mt-4 space-y-2 font-display text-xl">
-              {coordination.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
+          <div ref={gridRef} className="benefits-grid">
+            {benefits.map((benefit, index) => (
+              <article key={benefit.title} className="benefit-card">
+                <span className="benefit-number" aria-hidden="true">
+                  0{index + 1}
+                </span>
+                <h3 className="text-2xl font-medium leading-snug">{benefit.title}</h3>
+                <p className="mt-4 leading-relaxed text-evergreen-soft">{benefit.body}</p>
+              </article>
+            ))}
           </div>
         </div>
       </div>

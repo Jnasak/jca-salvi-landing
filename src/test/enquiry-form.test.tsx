@@ -98,9 +98,8 @@ it("preserves buyer/problem context and replaces it with a selected service with
   expect(screen.getByRole("complementary", { name: "Selected enquiry context" })).toHaveTextContent(
     "S01, S03, S04",
   );
-  fireEvent.click(screen.getByRole("button", { name: /^Expand Business/ }));
   fireEvent.click(screen.getByRole("button", { name: /^S08/ }));
-  fireEvent.click(screen.getByRole("link", { name: "Discuss this service" }));
+  fireEvent.click(screen.getAllByRole("link", { name: "Discuss this service" })[0]!);
   expect(screen.getByRole("complementary", { name: "Selected enquiry context" })).toHaveTextContent(
     "S08",
   );
