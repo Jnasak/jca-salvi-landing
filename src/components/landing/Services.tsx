@@ -177,27 +177,21 @@ export function Services({
               <span className="eyebrow text-evergreen-soft">
                 0{index + 1} · {category.services.length} service types
               </span>
-              <span className="mt-5 font-display text-xl font-semibold">
-                {category.title}
-              </span>
+              <span className="mt-5 font-display text-xl font-semibold">{category.title}</span>
             </a>
           ))}
         </nav>
         <div className="mt-12 max-w-4xl">
           <p className="eyebrow text-evergreen-soft">Service details</p>
           <p className="mt-2 text-sm text-evergreen-soft">
-            Scroll through the categories, or expand any service for its scope.
-            On smaller screens, the cards follow the normal page flow.
+            Scroll through the categories, or expand any service for its scope. On smaller
+            screens, the cards follow the normal page flow.
           </p>
         </div>
         <div className="service-stack-list mt-7">
           {serviceCategories.map((c, ci) => (
             <div key={c.title} className="service-stack-slot">
-              <ServiceFlashcard
-                category={c}
-                index={ci}
-                onDiscussService={onDiscussService}
-              />
+              <ServiceFlashcard category={c} index={ci} onDiscussService={onDiscussService} />
             </div>
           ))}
         </div>
