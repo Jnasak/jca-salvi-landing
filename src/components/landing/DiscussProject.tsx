@@ -1,7 +1,8 @@
-import { useState } from "react";
 import { ArrowUp, Clock, FileText, Target } from "lucide-react";
-import { serviceById, type ServiceId } from "@/content/landing";
 import { Button } from "@/components/ui/button";
+
+import { EnquiryForm } from "./EnquiryForm";
+import type { EnquiryContext } from "@/content/enquiry";
 
 const bring = [
   { Icon: FileText, label: "A short description" },
@@ -9,18 +10,7 @@ const bring = [
   { Icon: Clock, label: "Your timing" },
 ];
 
-const routes = [
-  "Free Enquiry Call",
-  "Project Discovery",
-  "One-to-One Strategy Consultation",
-] as const;
-
-export function DiscussProject({
-  context,
-}: {
-  context?: { situation?: string; service?: ServiceId | undefined };
-}) {
-  const [selectedRoute, setSelectedRoute] = useState<(typeof routes)[number] | null>(null);
+export function DiscussProject({ context }: { context?: EnquiryContext }) {
   return (
     <section
       id="discuss"
@@ -51,73 +41,8 @@ export function DiscussProject({
           ))}
         </ul>
 
-        <div className="mt-10 grid gap-4 text-left md:grid-cols-3">
-          {routes.map((route) => (
-            <article key={route} className="rounded-2xl border border-cream/20 bg-cream/[0.07] p-5">
-              <h3 className="text-xl font-semibold">{route}</h3>
-              <p className="mt-3 text-sm text-on-dark-muted">
-                {route === "Project Discovery"
-                  ? "Preview structured intake and qualification stages."
-                  : "Demonstration only — no live booking or payment."}
-              </p>
-              <button
-                type="button"
-                onClick={() => setSelectedRoute(route)}
-                aria-pressed={selectedRoute === route}
-                aria-controls="route-preview"
-                className="mt-5 min-h-11 rounded-full border border-cream/40 px-4 text-sm font-semibold text-cream"
-              >
-                Preview route
-              </button>
-            </article>
-          ))}
-        </div>
-        <div
-          id="route-preview"
-          role="status"
-          className="mt-6 rounded-2xl border border-cream/20 bg-cream/[0.07] p-6 text-left"
-        >
-          <p className="text-sm font-semibold text-champagne">
-            Internal prototype — simulated interactions only
-          </p>
-          {context?.situation && (
-            <p className="mt-3 text-sm">Selected buyer situation: {context.situation}</p>
-          )}
-          {context?.service && (
-            <p className="mt-2 text-sm">
-              Selected service: {context.service} — {serviceById(context.service).name}
-            </p>
-          )}
-          {selectedRoute ? (
-            <>
-              <p className="mt-4 font-semibold">{selectedRoute}</p>
-              {selectedRoute === "Project Discovery" ? (
-                <ol className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
-                  {[
-                    "1. Project Intake",
-                    "2. Review and Qualification",
-                    "3. Discovery Scheduling",
-                    "4. Scope and Proposal",
-                  ].map((stage) => (
-                    <li key={stage} className="rounded-xl bg-cream/10 p-3">
-                      {stage}
-                    </li>
-                  ))}
-                </ol>
-              ) : (
-                <p className="mt-3 text-sm">
-                  Request flow demonstration only. Scheduling and commercial terms remain subject to
-                  approval.
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="mt-3 text-sm">Select a route above to inspect its simulated next step.</p>
-          )}
-          <p className="mt-4 text-sm text-on-dark-muted">
-            No information is submitted, stored remotely or transmitted to a booking, payment or
-            enquiry service.
-          </p>
+        <div className="mx-auto max-w-3xl">
+          <EnquiryForm context={context ?? {}} />
         </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">

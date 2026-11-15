@@ -1,126 +1,112 @@
+import { useEffect, useRef } from "react";
+import { PortraitPlaceholder } from "./PortraitPlaceholder";
+import { ArrowUpRight } from "lucide-react";
+
+// Reorganises the existing capability statement; no new outcome or client claims.
 const benefits = [
-  "Understand Before Solving",
-  "Complementary Expertise",
-  "Clear Scope & Responsibilities",
-  "Practical, Scoped Support",
-  "Structured Coordination",
-  "Solutions Suited to Your Needs",
-] as const;
-const profiles = [
   {
-    name: "JCA",
-    position: "Business & Product",
-    summary:
-      "Business Analysis and Product Management, supported by Customer Experience and Operations & Workflow Automation.",
+    title: "Understand Before Solving",
+    body: "Start with the business challenge, context and intended outcome.",
   },
   {
-    name: "Salvi",
-    position: "Programme & Operations",
-    summary: "Programme, project and operational coordination supporting structured delivery.",
+    title: "Complementary Expertise",
+    body: "Combine business and product thinking with programme and operational coordination.",
   },
-] as const;
-
-const clarity = ["Business analysis", "Product thinking"];
-const coordination = ["Customer experience", "Operations", "Delivery coordination"];
-
-function BrandCross({ className }: { className?: string }) {
-  // Decorative cross echoing the logo's ×, persimmon used decoratively only.
-  return (
-    <svg viewBox="396 60 56 56" className={className} aria-hidden="true" focusable="false">
-      <path
-        fill="var(--persimmon)"
-        d="M441.22 60.28 424.45 77.05 407.68 60.28 396.76 71.33 413.53 87.97 396.89 104.61 407.81 115.53 424.45 98.89 441.09 115.66 452.01 104.74 435.37 87.97 452.14 71.2Z"
-      />
-    </svg>
-  );
-}
+  {
+    title: "Clear Scope & Responsibilities",
+    body: "Agree what is included, who owns the work and where specialist support is needed.",
+  },
+  {
+    title: "Practical, Scoped Support",
+    body: "Shape activities and deliverables around an agreed, manageable brief.",
+  },
+  {
+    title: "Structured Coordination",
+    body: "Make milestones, dependencies and responsibilities visible.",
+  },
+  {
+    title: "Solutions Suited to Your Needs",
+    body: "Consider the organisation, people and workflows involved before recommending next steps.",
+  },
+];
 
 export function WhyUs() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid || typeof IntersectionObserver === "undefined") return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          // Content is visible before observation and if JavaScript/animations are unavailable.
+          if (!reduce.matches) entry.target.classList.add("benefit-enter");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 },
+    );
+    Array.from(grid.children).forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
   return (
-    <section id="why" aria-labelledby="why-title" className="py-20 sm:py-28">
-      <div className="container-page grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div>
-          <p className="eyebrow text-evergreen-soft">Why JCA × Salvi</p>
-          <h2 id="why-title" className="mt-4 text-4xl font-medium sm:text-5xl">
-            Business clarity meets practical coordination.
-          </h2>
-          <p className="mt-6 max-w-xl text-lg">
-            We are independent professionals combining business analysis and product thinking with
-            customer experience, operations and delivery coordination.
-          </p>
-          <p className="mt-6 inline-flex items-center gap-3 rounded-full border border-evergreen/15 bg-paper px-4 py-2 text-sm font-semibold">
-            <span aria-hidden="true" className="size-2 rounded-full bg-champagne" />
-            Scope and responsibilities agreed for each project.
-          </p>
-        </div>
-
-        <div className="relative grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-          <div className="rounded-3xl bg-sage p-7">
-            <p className="eyebrow text-evergreen">Business clarity</p>
-            <ul className="mt-4 space-y-2 font-display text-xl">
-              {clarity.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          </div>
-          <BrandCross className="mx-auto size-8 sm:size-10" />
-          <div className="on-dark bg-evergreen-rich rounded-3xl p-7 text-cream">
-            <p className="eyebrow text-champagne">Practical coordination</p>
-            <ul className="mt-4 space-y-2 font-display text-xl">
-              {coordination.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="container-page mt-14 sm:mt-20">
-        <h3 className="font-display text-2xl font-semibold sm:text-3xl">
-          The people behind the partnership
-        </h3>
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          {profiles.map((person) => (
-            <article
-              key={person.name}
-              className="rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft sm:p-8"
-            >
-              <div
-                aria-label={`Approved photograph of ${person.name} pending`}
-                className="flex min-h-32 items-center justify-center rounded-2xl bg-sage-soft text-sm text-evergreen-soft"
-              >
-                Internal preview — portrait pending approval
-              </div>
-              <p className="eyebrow mt-5 text-evergreen-soft">
-                {person.name} — {person.position}
+    <section id="about" aria-labelledby="why-title" className="benefits-section py-16 sm:py-24">
+      <div className="container-page">
+        <div className="benefits-shell">
+          <div className="benefits-heading">
+            <div>
+              <p className="eyebrow text-champagne">Why JCA × Salvi</p>
+              <h2 id="why-title" className="mt-4 max-w-2xl text-4xl font-medium sm:text-5xl">
+                Different Strengths. One Coordinated Approach.
+              </h2>
+              <p className="mt-5 max-w-2xl leading-relaxed">
+                We combine business and product thinking with practical delivery coordination to
+                help clients clarify what needs to change and organise the work needed to move
+                forward.
               </p>
-              <p className="mt-3 leading-relaxed">{person.summary}</p>
-            </article>
-          ))}
-        </div>
-        <div className="mt-14">
-          <p className="eyebrow text-evergreen-soft">Our approach to collaboration</p>
-          <h3 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">
-            Practical support, clearly scoped.
-          </h3>
-          <p className="mt-3 text-sm text-evergreen-soft">
-            Draft benefit headings for internal review — not approved publication copy.
+            </div>
+            <a href="#discuss" className="benefits-cta">
+              Discuss Your Project <ArrowUpRight aria-hidden="true" size={18} />
+            </a>
+          </div>
+          <div className="partner-grid">
+            <div className="partner-profile">
+              <PortraitPlaceholder name="JCA" label="JCA — approved portrait pending" index={1} />
+              <div>
+                <p className="eyebrow">JCA — Business & Product</p>
+                <h3>Business Analysis + Product Management</h3>
+                <p>Supported by Customer Experience and Operations & Workflow Automation.</p>
+              </div>
+            </div>
+            <div className="partner-profile">
+              <PortraitPlaceholder
+                name="Salvi"
+                label="Salvi — approved portrait pending"
+                index={2}
+              />
+              <div>
+                <p className="eyebrow">Salvi — Programme & Operations</p>
+                <h3>Programme, project & operational coordination</h3>
+                <p>Supporting structured delivery and execution.</p>
+              </div>
+            </div>
+          </div>
+          <p className="prototype-note benefits-disclosure">
+            Proposed benefit statements — awaiting SIA and principal clearance. Partner portraits
+            are placeholders.
           </p>
-          <ol className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div ref={gridRef} className="benefits-grid">
             {benefits.map((benefit, index) => (
-              <li
-                key={benefit}
-                className="rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft"
-              >
-                <span
-                  aria-hidden="true"
-                  className="inline-flex size-10 items-center justify-center rounded-full bg-sage text-sm font-semibold text-evergreen"
-                >
-                  {String(index + 1).padStart(2, "0")}
+              <article key={benefit.title} className="benefit-card">
+                <span className="benefit-number" aria-hidden="true">
+                  0{index + 1}
                 </span>
-                <h4 className="mt-8 font-display text-xl font-semibold leading-snug">{benefit}</h4>
-              </li>
+                <h3 className="text-2xl font-medium leading-snug">{benefit.title}</h3>
+                <p className="mt-4 leading-relaxed text-evergreen-soft">{benefit.body}</p>
+              </article>
             ))}
-          </ol>
+          </div>
         </div>
       </div>
     </section>

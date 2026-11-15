@@ -3,13 +3,13 @@ import { WorkflowGraphic } from "./WorkflowGraphic";
 
 export function OurApproach() {
   return (
-    <section id="approach" aria-labelledby="approach-title" className="py-20 sm:py-28">
+    <section id="how-we-work" aria-labelledby="approach-title" className="py-20 sm:py-28">
       <div className="container-page">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-16">
           <div className="min-w-0">
             <p className="eyebrow flex items-center gap-3 text-evergreen-soft">
               <span aria-hidden="true" className="h-px w-8 bg-champagne" />
-              {approachCopy.eyebrow}
+              How We Work
             </p>
             <h2 id="approach-title" className="mt-4 text-4xl font-medium sm:text-5xl">
               {approachCopy.title}

@@ -29,7 +29,7 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-/** Illustrative animated workflow for the hero. Not client data. */
+/** Illustrative workflow in How We Work. Not client data. */
 export function WorkflowGraphic() {
   const uid = useId().replace(/:/g, "");
   const reduced = usePrefersReducedMotion();
@@ -89,14 +89,14 @@ export function WorkflowGraphic() {
         !motionOn && "wf-paused",
       )}
     >
-      <div className="flex items-center justify-between gap-3">
+      <div className="workflow-toolbar flex flex-wrap items-center justify-between gap-3">
         <p className="eyebrow text-evergreen-soft">Illustrative workflow</p>
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
           aria-pressed={!playing}
           aria-label={playing ? "Pause workflow animation" : "Play workflow animation"}
-          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-evergreen/20 bg-cream px-3 text-xs font-semibold text-evergreen transition-colors hover:border-evergreen"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-evergreen/20 bg-cream px-3 text-xs font-semibold text-evergreen transition-colors hover:border-evergreen"
         >
           {playing ? (
             <Pause className="size-3.5" aria-hidden="true" />

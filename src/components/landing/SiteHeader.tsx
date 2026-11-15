@@ -12,13 +12,15 @@ import {
 import { Logo } from "./Logo";
 
 const nav = [
+  { href: "#top", label: "Home" },
   { href: "#solutions", label: "Solutions" },
-  { href: "#who-we-help", label: "Who we help" },
   { href: "#services", label: "Services" },
-  { href: "#how-we-work", label: "How we work" },
+  { href: "#projects", label: "Projects" },
+  { href: "#about", label: "About" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({ appearance = "light" }: { appearance?: "light" | "dark" }) {
+  const header = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const destination = useRef<string | null>(null);
   const logo = useRef<HTMLAnchorElement>(null);
@@ -36,21 +38,44 @@ export function SiteHeader() {
     return () => desktop.removeEventListener("change", closeOnDesktop);
   }, []);
 
+  useEffect(() => {
+    const element = header.current;
+    if (!element) return;
+    const root = document.documentElement;
+    const previous = root.style.getPropertyValue("--site-header-offset");
+    const update = () => {
+      const height = Math.ceil(element.getBoundingClientRect().height);
+      const pinned = height > 0 && height <= window.innerHeight * 0.35;
+      element.dataset["pinned"] = String(pinned);
+      root.style.setProperty("--site-header-offset", `${pinned ? height + 12 : 12}px`);
+    };
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+    observer?.observe(element);
+    window.addEventListener("resize", update);
+    update();
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", update);
+      if (previous) root.style.setProperty("--site-header-offset", previous);
+      else root.style.removeProperty("--site-header-offset");
+    };
+  }, []);
+
   function navigate(href: string) {
     destination.current = href;
     setOpen(false);
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-cream/85 backdrop-blur-md">
-      <div className="container-page flex h-16 items-center justify-between gap-3 sm:h-20">
+    <header ref={header} data-appearance={appearance} className="site-header">
+      <div className="container-page site-header-row">
         <a
           ref={logo}
           href="#top"
-          className="-ml-4 shrink-0 rounded-md sm:-ml-6"
-          aria-label="JCA × Salvi — back to top"
+          className="shrink-0 rounded-md"
+          aria-label="JS BusinessSuite — back to top"
         >
-          <Logo className="w-[150px] sm:w-[220px]" />
+          <Logo appearance={appearance} className="site-header-logo" />
         </a>
         <nav aria-label="Page sections" className="hidden lg:block">
           <ul className="flex items-center gap-7 text-sm font-medium">
@@ -58,7 +83,7 @@ export function SiteHeader() {
               <li key={n.href}>
                 <a
                   href={n.href}
-                  className="inline-flex min-h-11 items-center text-evergreen-soft transition-colors hover:text-evergreen"
+                  className="site-header-nav-link inline-flex min-h-11 items-center transition-colors"
                 >
                   {n.label}
                 </a>
@@ -92,14 +117,15 @@ export function SiteHeader() {
               <Button
                 variant="outline"
                 size="iconRound"
-                className="lg:hidden"
+                className="header-menu-trigger lg:hidden"
                 aria-label="Open navigation menu"
               >
                 <Menu aria-hidden="true" />
               </Button>
             </SheetTrigger>
             <SheetContent
-              className="w-[min(100%,24rem)] overflow-y-auto overscroll-contain bg-cream pt-20"
+              data-appearance={appearance}
+              className="site-menu w-[min(100%,24rem)] overflow-y-auto overscroll-contain"
               onCloseAutoFocus={(event) => {
                 if (destination.current) {
                   event.preventDefault();
@@ -119,8 +145,10 @@ export function SiteHeader() {
               }}
             >
               <SheetHeader className="text-left">
-                <SheetTitle>Explore JCA × Salvi</SheetTitle>
-                <SheetDescription>Find the right support for your business.</SheetDescription>
+                <SheetTitle className="site-menu-title">Explore JS BusinessSuite</SheetTitle>
+                <SheetDescription className="site-menu-description">
+                  Find the right support for your business.
+                </SheetDescription>
               </SheetHeader>
               <nav aria-label="Mobile page sections" className="mt-6">
                 <ul className="divide-y divide-border">
@@ -137,7 +165,7 @@ export function SiteHeader() {
                     </li>
                   ))}
                 </ul>
-                <Button asChild variant="hero" size="xl" className="mt-6 w-full">
+                <Button asChild variant="hero" size="xl" className="header-menu-cta mt-6 w-full">
                   <a href="#discuss" onClick={() => navigate("#discuss")}>
                     Discuss Your Project
                     <ArrowRight aria-hidden="true" />

@@ -43,22 +43,18 @@ describe("accessible prototype FAQ", () => {
   });
 });
 
-describe("simulated commercial routes", () => {
-  it("shows selected buyer and service without a live form", () => {
+describe("synthetic-only enquiry context", () => {
+  it("preserves the selected buyer and canonical service in the test form", () => {
     render(
       <DiscussProject
-        context={{ situation: "Product Teams & Digital Businesses", service: "S02" }}
+        context={{ segment: "Product Teams & Digital Businesses", serviceIds: ["S02"] }}
       />,
     );
-    expect(screen.getByText(/Selected buyer situation:/)).toHaveTextContent(
-      "Product Teams & Digital Businesses",
-    );
-    expect(screen.getByText(/Selected service:/)).toHaveTextContent(
-      "S02 — Product Discovery & Improvement",
-    );
-    fireEvent.click(screen.getAllByRole("button", { name: "Preview route" })[1]!);
-    expect(screen.getByText("4. Scope and Proposal")).toBeInTheDocument();
-    expect(document.querySelector("form")).toBeNull();
+    expect(
+      screen.getByRole("complementary", { name: "Selected enquiry context" }),
+    ).toHaveTextContent("S02");
+    expect(screen.getByRole("form")).not.toHaveAttribute("action");
+    expect(screen.getByRole("form")).not.toHaveAttribute("data-netlify");
   });
 });
 

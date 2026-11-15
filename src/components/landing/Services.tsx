@@ -1,205 +1,217 @@
-import { useRef, useState } from "react";
-import { Maximize2, Minus, Plus } from "lucide-react";
-import { serviceCategories, type ServiceId, type ServiceCategory } from "@/content/landing";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Workflow, Layers, CalendarCheck } from "lucide-react";
+import { serviceCategories, serviceById, type ServiceId } from "@/content/landing";
+import type { EnquiryContext } from "@/content/enquiry";
+import { useServiceStack } from "./useServiceStack";
+import { ReferenceMedia } from "./ReferenceMedia";
 
-const scope: Record<ServiceId, string> = {
-  S01: "Map current and future workflows, clarify requirements, responsibilities and handoffs.",
-  S02: "Explore user and stakeholder needs, define product requirements and prioritise improvements.",
-  S03: "Structure workstreams, milestones, dependencies, ownership and delivery reporting.",
-  S04: "Review customer journeys, onboarding, follow-up and escalation responsibilities.",
-  S05: "Assess implementation gaps and plan recovery, handover and operational adoption.",
-  S06: "Analyse order, fulfilment and customer-service handoffs and improvement opportunities.",
-  S07: "Clarify technical scope and delivery readiness with appropriately qualified partners. Software development is not automatically included.",
-  S08: "Assess automation readiness, document processes and review feasibility. AI development and automation implementation are not included automatically.",
+const serviceScope: Record<ServiceId, { summary: string; deliverables: string }> = {
+  S01: {
+    summary:
+      "Map current and future workflows, clarify requirements, responsibilities and handoffs.",
+    deliverables:
+      "Workflow maps, prioritised improvement recommendations and responsibility definitions.",
+  },
+  S02: {
+    summary:
+      "Explore user and stakeholder needs, define product requirements and prioritise improvements.",
+    deliverables: "Problem statements, discovery findings and prioritised requirements.",
+  },
+  S03: {
+    summary: "Structure workstreams, milestones, dependencies, ownership and delivery reporting.",
+    deliverables: "Delivery plans, responsibility maps and agreed progress reporting.",
+  },
+  S04: {
+    summary: "Review customer journeys, onboarding, follow-up and escalation responsibilities.",
+    deliverables: "Journey maps, friction reviews and service-process recommendations.",
+  },
+  S05: {
+    summary: "Assess implementation gaps and plan recovery, handover and operational adoption.",
+    deliverables: "Gap assessment, recovery priorities and adoption or handover plans.",
+  },
+  S06: {
+    summary:
+      "Analyse order, fulfilment and customer-service handoffs and improvement opportunities.",
+    deliverables: "Order-workflow reviews, exception maps and improvement priorities.",
+  },
+  S07: {
+    summary:
+      "Clarify technical scope and delivery readiness with appropriately qualified partners. Software development is not automatically included.",
+    deliverables:
+      "Scoped requirements, technical handoff briefs and agreed specialist responsibilities.",
+  },
+  S08: {
+    summary:
+      "Assess automation readiness, document processes and review feasibility. AI development and automation implementation are not included automatically.",
+    deliverables: "Readiness assessment, process documentation and feasibility recommendations.",
+  },
 };
-
-function ServiceFlashcard({
-  category,
-  index,
-  onDiscussService,
-}: {
-  category: ServiceCategory;
-  index: number;
-  onDiscussService?: ((service: ServiceId) => void) | undefined;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const [maximised, setMaximised] = useState(false);
-  const [selected, setSelected] = useState<ServiceId | null>(null);
-  const navigatingToDiscuss = useRef(false);
-  const panelId = `service-category-${index}`;
-  const details = (
-    <ul className="mt-6 space-y-3">
-      {category.services.map((s) => (
-        <li key={s.id} className="rounded-2xl border border-evergreen/15 bg-cream p-4">
-          <button
-            type="button"
-            className="flex min-h-11 w-full items-center justify-between gap-3 text-left font-medium"
-            aria-expanded={selected === s.id}
-            aria-controls={`detail-${index}-${s.id}`}
-            onClick={() => setSelected(selected === s.id ? null : s.id)}
-          >
-            <span>
-              <span className="mr-2 text-xs text-evergreen-soft">{s.id}</span>
-              {s.name}
-            </span>
-            {selected === s.id ? (
-              <Minus aria-hidden="true" size={18} />
-            ) : (
-              <Plus aria-hidden="true" size={18} />
-            )}
-          </button>
-          {selected === s.id && (
-            <div id={`detail-${index}-${s.id}`} className="pt-3">
-              <p className="leading-relaxed text-evergreen-soft">{scope[s.id]}</p>
-              <p className="mt-3 text-sm">Scope and deliverables are agreed individually.</p>
-              <a
-                href="#discuss"
-                onClick={() => {
-                  onDiscussService?.(s.id);
-                  navigatingToDiscuss.current = maximised;
-                  setMaximised(false);
-                }}
-                className="mt-4 inline-flex min-h-11 items-center rounded-full bg-evergreen px-5 text-sm font-medium text-cream"
-              >
-                Discuss this service
-              </a>
-              <p className="mt-2 text-xs text-evergreen-soft">
-                Prototype only — live enquiry connection pending.
-              </p>
-            </div>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-  return (
-    <article
-      id={`service-detail-${index}`}
-      data-expanded={expanded}
-      className="service-stack-card flex min-w-0 flex-col rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft sm:p-8"
-    >
-      <p className="text-sm text-evergreen-soft">
-        0{index + 1} · {category.services.length} service types
-      </p>
-      <h3 className="mt-4 text-2xl font-semibold leading-snug">{category.title}</h3>
-      <p className="mt-3 leading-relaxed text-evergreen-soft">{category.summary}</p>
-      <div className="mt-6 flex flex-wrap gap-2">
-        <button
-          type="button"
-          aria-expanded={expanded}
-          aria-controls={panelId}
-          onClick={() => setExpanded(!expanded)}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-evergreen/30 px-4 text-sm font-medium"
-        >
-          {expanded ? (
-            <Minus aria-hidden="true" size={16} />
-          ) : (
-            <Plus aria-hidden="true" size={16} />
-          )}
-          {expanded ? "Minimise" : "Expand"}
-          <span className="sr-only"> {category.title}</span>
-        </button>
-        {expanded && (
-          <Dialog open={maximised} onOpenChange={setMaximised}>
-            <DialogTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-evergreen px-4 text-sm font-medium text-cream"
-              >
-                <Maximize2 aria-hidden="true" size={16} />
-                Maximise<span className="sr-only"> {category.title}</span>
-              </button>
-            </DialogTrigger>
-            <DialogContent
-              onCloseAutoFocus={(event) => {
-                if (navigatingToDiscuss.current) {
-                  event.preventDefault();
-                  navigatingToDiscuss.current = false;
-                  const heading = document.getElementById("discuss-title");
-                  heading?.setAttribute("tabindex", "-1");
-                  heading?.focus({ preventScroll: true });
-                  document.getElementById("discuss")?.scrollIntoView({ block: "start" });
-                }
-              }}
-              className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-3xl p-6 sm:p-10"
-            >
-              <DialogTitle className="pr-12 text-2xl leading-snug sm:text-3xl">
-                {category.title}
-              </DialogTitle>
-              <DialogDescription className="text-base">{category.summary}</DialogDescription>
-              {details}
-              <button
-                type="button"
-                onClick={() => setMaximised(false)}
-                className="min-h-11 rounded-full border border-evergreen/30 px-5 text-sm font-medium"
-              >
-                Minimise to card
-              </button>
-            </DialogContent>
-          </Dialog>
-        )}
-      </div>
-      <div id={panelId} hidden={!expanded}>
-        {expanded && !maximised && details}
-      </div>
-    </article>
-  );
-}
-
+const icons = [Workflow, Layers, CalendarCheck];
 export function Services({
-  onDiscussService,
+  onDiscuss,
+  requested,
 }: {
-  onDiscussService?: ((service: ServiceId) => void) | undefined;
+  onDiscuss?: (c: EnquiryContext) => void;
+  requested?: { id: ServiceId; revision: number } | null;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const pendingFocus = useRef<number | null>(null);
+  const [selected, setSelected] = useState<ServiceId>("S01");
+  const canStack = useServiceStack(ref, []);
+  useEffect(
+    () => () => {
+      if (pendingFocus.current !== null) window.cancelAnimationFrame(pendingFocus.current);
+    },
+    [],
+  );
+  const activeCategory = serviceCategories.find((c) => c.services.some((s) => s.id === selected))!;
+  function reveal(id: ServiceId) {
+    setSelected(id);
+    if (pendingFocus.current !== null) window.cancelAnimationFrame(pendingFocus.current);
+    pendingFocus.current = window.requestAnimationFrame(() => {
+      pendingFocus.current = null;
+      const title = document.getElementById("service-detail-title");
+      title?.focus({ preventScroll: true });
+      document.getElementById("service-explorer")?.scrollIntoView({ block: "start" });
+    });
+  }
+  useEffect(() => {
+    if (requested) reveal(requested.id);
+  }, [requested]);
   return (
-    <section id="services" aria-labelledby="services-title" className="bg-sage-soft py-20 sm:py-28">
-      <div className="container-page">
-        <div className="max-w-2xl">
-          <p className="eyebrow text-evergreen-soft">What We Help With</p>
-          <h2 id="services-title" className="mt-4 text-4xl font-medium sm:text-5xl">
-            Eight services, three clear areas of focus.
-          </h2>
-        </div>
-        <nav aria-label="Choose a service category" className="mt-12 grid gap-4 lg:grid-cols-3">
-          {serviceCategories.map((category, index) => (
-            <a
-              key={category.title}
-              href={`#service-detail-${index}`}
-              className="flex min-h-36 flex-col justify-between rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft transition-colors hover:bg-cream"
-            >
-              <span className="eyebrow text-evergreen-soft">
-                0{index + 1} · {category.services.length} service types
-              </span>
-              <span className="mt-5 font-display text-xl font-semibold">{category.title}</span>
-            </a>
-          ))}
-        </nav>
-        <div className="mt-12 max-w-4xl">
-          <p className="eyebrow text-evergreen-soft">Service details</p>
-          <p className="mt-2 text-sm text-evergreen-soft">
-            Scroll through the categories, or expand any service for its scope. On smaller screens,
-            the cards follow the normal page flow.
-          </p>
-        </div>
-        <div className="service-stack-list mt-7">
-          {serviceCategories.map((c, ci) => (
-            <div key={c.title} className="service-stack-slot">
-              <ServiceFlashcard category={c} index={ci} onDiscussService={onDiscussService} />
-            </div>
-          ))}
-        </div>
-        <p className="mt-8 max-w-3xl text-sm text-evergreen-soft">
-          Technical delivery is offered only through appropriately scoped capability or
-          partnerships, agreed for each project.
-        </p>
+    <section
+      id="services"
+      className="container-page section-space"
+      aria-labelledby="services-title"
+    >
+      <div className="section-heading">
+        <h2 id="services-title">Our Services</h2>
+        <span className="heading-rule" aria-hidden="true" />
+        <a href="#service-details">
+          Discover all services <ArrowRight size={17} aria-hidden="true" />
+        </a>
       </div>
+      <nav className="category-entry-grid" aria-label="Three Service Categories">
+        {serviceCategories.map((c, i) => {
+          const Icon = icons[i]!;
+          return (
+            <a
+              key={c.title}
+              className={`category-entry category-entry-${i}`}
+              href={`#service-category-${i}`}
+            >
+              <ReferenceMedia index={i} />
+              <div>
+                <Icon aria-hidden="true" size={30} />
+                <h3>{c.title}</h3>
+                <p>{c.summary}</p>
+                <span>
+                  {c.services.length} service types <ArrowRight size={17} aria-hidden="true" />
+                </span>
+              </div>
+            </a>
+          );
+        })}
+      </nav>
+      <div id="service-details" className="service-details-heading">
+        <p className="eyebrow">Explore the support behind each category</p>
+        <h3>Three areas of focus. Eight practical services.</h3>
+        <p>Choose any service to see its scope and indicative deliverables.</p>
+      </div>
+      <div ref={ref} className="service-stack" data-stacking={canStack ? "enabled" : "disabled"}>
+        {serviceCategories.map((c, i) => (
+          <article
+            className="service-stack-card"
+            id={`service-category-${i}`}
+            key={c.title}
+            aria-labelledby={`category-title-${i}`}
+          >
+            <div className="service-stack-copy">
+              <p className="eyebrow">0{i + 1} / Service Category</p>
+              <h3 id={`category-title-${i}`}>{c.title}</h3>
+              <p>{c.summary}</p>
+              <div role="group" aria-label={`${c.title} services`} className="service-type-list">
+                {c.services.map((s) => (
+                  <button
+                    id={`service-${s.id}`}
+                    key={s.id}
+                    type="button"
+                    className="service-type-control"
+                    aria-pressed={selected === s.id}
+                    aria-controls="service-explorer"
+                    onClick={() => reveal(s.id)}
+                  >
+                    <span className="service-type-id">{s.id}</span>
+                    <span className="min-w-0 flex-1">{s.name}</span>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="service-stack-visual">
+              <ReferenceMedia index={i} />
+              <span className="media-disclosure">Illustrative design reference</span>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div
+        id="service-explorer"
+        role="region"
+        aria-labelledby="service-detail-title"
+        className="service-explorer"
+      >
+        <div className="explorer-selection">
+          <p className="eyebrow">Service Explorer / {selected}</p>
+          <label htmlFor="service-choice">Select a service</label>
+          <select
+            id="service-choice"
+            value={selected}
+            onChange={(e) => setSelected(e.target.value as ServiceId)}
+          >
+            {serviceCategories.map((c) => (
+              <optgroup key={c.title} label={c.title}>
+                {c.services.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.id} — {s.name}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          <p>{activeCategory.title}</p>
+        </div>
+        <div aria-live="polite">
+          <h3 id="service-detail-title" tabIndex={-1}>
+            {serviceById(selected).name}
+          </h3>
+          <p>{serviceScope[selected].summary}</p>
+          <h4>Indicative deliverables</h4>
+          <p>{serviceScope[selected].deliverables}</p>
+          <p className="prototype-note">
+            Illustrative scope; specific activities and deliverables require agreement.
+          </p>
+          <a
+            href="#discuss"
+            className="primary-action"
+            onClick={(e) => {
+              e.preventDefault();
+              if (pendingFocus.current !== null) window.cancelAnimationFrame(pendingFocus.current);
+              onDiscuss?.({ serviceIds: [selected] });
+              const h = document.getElementById("discuss-title");
+              h?.setAttribute("tabindex", "-1");
+              h?.focus({ preventScroll: true });
+              document.getElementById("discuss")?.scrollIntoView({ block: "start" });
+            }}
+          >
+            Discuss this service <ArrowRight size={18} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+      <p className="prototype-note mt-4">
+        Technical delivery requires appropriately scoped capability or partnerships. This prototype
+        does not offer unrestricted software engineering.
+      </p>
     </section>
   );
 }
