@@ -153,10 +153,7 @@ export const heroCopy = {
    * Intentional line breaks (shown from small tablets up), grouped by sentence.
    * Joined with spaces they equal `headline`. The final line carries the single persimmon rule.
    */
-  headlineSentences: [
-    ["Business Challenges", "Deserve Practical"],
-    ["Solutions."],
-  ],
+  headlineSentences: [["Business Challenges", "Deserve Practical"], ["Solutions."]],
   supporting:
     "We help growing businesses clarify challenges, improve workflows, define product needs and coordinate delivery.",
   primaryCta: { label: "Discuss Your Project", href: "#discuss" },
