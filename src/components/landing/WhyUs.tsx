@@ -1,3 +1,16 @@
+const benefits = [
+  "Understand Before Solving",
+  "Complementary Expertise",
+  "Clear Scope & Responsibilities",
+  "Practical, Scoped Support",
+  "Structured Coordination",
+  "Solutions Suited to Your Needs",
+] as const;
+const profiles = [
+  { name: "JCA", position: "Business & Product", summary: "Business Analysis and Product Management, supported by Customer Experience and Operations & Workflow Automation." },
+  { name: "Salvi", position: "Programme & Operations", summary: "Programme, project and operational coordination supporting structured delivery." },
+] as const;
+
 const clarity = ["Business analysis", "Product thinking"];
 const coordination = ["Customer experience", "Operations", "Delivery coordination"];
 
@@ -50,6 +63,35 @@ export function WhyUs() {
               ))}
             </ul>
           </div>
+        </div>
+      </div>
+      <div className="container-page mt-14 sm:mt-20">
+        <h3 className="font-display text-2xl font-semibold sm:text-3xl">The people behind the partnership</h3>
+        <div className="mt-6 grid gap-5 md:grid-cols-2">
+          {profiles.map((person) => (
+            <article key={person.name} className="rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft sm:p-8">
+              <div aria-label={`Approved photograph of ${person.name} pending`} className="flex min-h-32 items-center justify-center rounded-2xl bg-sage-soft text-sm text-evergreen-soft">
+                Internal preview — portrait pending approval
+              </div>
+              <p className="eyebrow mt-5 text-evergreen-soft">{person.name} — {person.position}</p>
+              <p className="mt-3 leading-relaxed">{person.summary}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-14">
+          <p className="eyebrow text-evergreen-soft">Our approach to collaboration</p>
+          <h3 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">Practical support, clearly scoped.</h3>
+          <p className="mt-3 text-sm text-evergreen-soft">Draft benefit headings for internal review — not approved publication copy.</p>
+          <ol className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {benefits.map((benefit, index) => (
+              <li key={benefit} className="rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft">
+                <span aria-hidden="true" className="inline-flex size-10 items-center justify-center rounded-full bg-sage text-sm font-semibold text-evergreen">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h4 className="mt-8 font-display text-xl font-semibold leading-snug">{benefit}</h4>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
