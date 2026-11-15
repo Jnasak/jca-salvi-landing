@@ -77,37 +77,50 @@ export function Hero() {
 
         <div className="min-w-0">
           <div
-            aria-label="The partners"
-            role="group"
-            className="enter-rise grid w-full max-w-md grid-cols-2 items-start gap-4 [--d:380ms] min-[390px]:gap-5 sm:max-w-xl sm:gap-6 lg:max-w-none lg:gap-7"
-          >
-            {partners.map((p, i) => (
-              <PortraitPlaceholder
-                key={p.name}
-                name={p.name}
-                label={p.label}
-                index={i + 1}
-                className={i === 1 ? "mt-8 sm:mt-12 lg:mt-20" : "lg:mb-20"}
-              />
-            ))}
-          </div>
-          <div
             role="region"
             aria-roledescription="carousel"
-            aria-label="Service category stories"
-            className="mt-6 rounded-3xl border border-evergreen/15 bg-paper p-5 shadow-soft sm:p-6"
+            aria-label="Three editorial service stories"
+            className="rounded-3xl border border-evergreen/15 bg-paper p-4 shadow-soft sm:p-6"
           >
-            <p className="eyebrow text-evergreen-soft">Explore our three service areas</p>
-            <div aria-live="polite" aria-atomic="true" className="mt-3 min-h-28">
-              <p className="text-sm text-evergreen-soft">
-                Story {storyIndex + 1} of 3 · Draft captions for internal review
-              </p>
-              <h2 className="mt-2 font-display text-xl font-semibold sm:text-2xl">
-                {serviceCategories[storyIndex]?.title ?? "Business & Workflow Improvement"}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-evergreen-soft">
-                {stories[storyIndex]}
-              </p>
+            <div
+              className="relative overflow-hidden rounded-3xl border border-evergreen/10 bg-cream-deep p-5 sm:p-7"
+            >
+              <div
+                className="pointer-events-none absolute inset-0 opacity-60 transition-colors duration-300"
+                style={{
+                  backgroundColor:
+                    storyIndex === 0 ? "#C2B9B0" : storyIndex === 1 ? "#C2CAD0" : "#AFD275",
+                }}
+                aria-hidden="true"
+              />
+              <div
+                aria-label="Approved partner photographs pending"
+                role="group"
+                className="relative grid grid-cols-2 items-start gap-4 sm:gap-6"
+              >
+                {partners.map((p, i) => (
+                  <PortraitPlaceholder
+                    key={p.name}
+                    name={p.name}
+                    label={p.label}
+                    index={i + 1}
+                    className={i === 1 ? "mt-6 sm:mt-12" : ""}
+                  />
+                ))}
+              </div>
+              <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="relative mt-6 rounded-2xl border border-evergreen/10 bg-cream/95 p-4 sm:p-5"
+              >
+                <p className="eyebrow text-evergreen-soft">
+                  Story {storyIndex + 1} of 3 · Internal draft
+                </p>
+                <h2 className="mt-2 text-xl font-semibold leading-snug sm:text-2xl">
+                  {serviceCategories[storyIndex]?.title ?? "Business & Workflow Improvement"}
+                </h2>
+                <p className="mt-2 text-sm text-evergreen-soft">{stories[storyIndex]}</p>
+              </div>
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-2">
               <button
@@ -136,14 +149,6 @@ export function Hero() {
                   </button>
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={() => advanceStory(1)}
-                aria-label="Next service story"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-evergreen/30"
-              >
-                <ArrowRight aria-hidden="true" size={19} />
-              </button>
               <a
                 href="#services"
                 className="ml-auto inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4"
