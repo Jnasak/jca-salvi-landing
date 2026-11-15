@@ -5,6 +5,8 @@ import { Hero } from "@/components/landing/Hero";
 import { BuyerCarousel } from "@/components/landing/BuyerCarousel";
 import { WhoWeHelp } from "@/components/landing/WhoWeHelp";
 import { Services } from "@/components/landing/Services";
+import { Projects } from "@/components/landing/Projects";
+import { Faq } from "@/components/landing/Faq";
 import { WhyUs } from "@/components/landing/WhyUs";
 import { HowWeWork } from "@/components/landing/HowWeWork";
 import { OurApproach } from "@/components/landing/OurApproach";
@@ -45,8 +47,10 @@ export default function App() {
         <WhoWeHelp onSelect={openSituation} />
         <Services onDiscussService={(service) => setEnquiryContext({ service })} />
         <WhyUs />
+        <Projects />
         <HowWeWork />
         <OurApproach />
+        <Faq />
         <DiscussProject context={enquiryContext} />
       </main>
       <SiteFooter />
