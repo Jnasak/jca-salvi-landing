@@ -68,7 +68,7 @@ export function Projects({ projects = [] }: { projects?: readonly ProjectCaseStu
         </div>
         {publishable.length === 0 && (
           <p className="mt-6 text-sm text-evergreen-soft">
-            These are service-area placeholders, not client projects or evidence of delivered results.
+            These are service-area placeholders, not client projects or evidence of delivered\n            results.
           </p>
         )}
       </div>
