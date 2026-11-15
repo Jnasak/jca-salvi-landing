@@ -147,6 +147,14 @@ export function Hero() {
                   </button>
                 ))}
               </div>
+              <button
+                type="button"
+                onClick={() => advanceStory(1)}
+                aria-label="Next service story"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-evergreen/30"
+              >
+                <ArrowRight aria-hidden="true" size={19} />
+              </button>
               <a
                 href="#services"
                 className="ml-auto inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4"
