@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import type { ServiceId } from "@/content/landing";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { Hero } from "@/components/landing/Hero";
 import { BuyerCarousel } from "@/components/landing/BuyerCarousel";
@@ -12,6 +13,7 @@ import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function App() {
   const [slide, setSlide] = useState(0);
+  const [enquiryContext, setEnquiryContext] = useState<{ situation?: string; service?: ServiceId }>({});
 
   const openSituation = useCallback((i: number) => {
     setSlide(i);
@@ -33,13 +35,13 @@ export default function App() {
       <SiteHeader />
       <main id="main">
         <Hero />
-        <BuyerCarousel index={slide} onIndexChange={setSlide} />
+        <BuyerCarousel index={slide} onIndexChange={setSlide} onDiscuss={(situation, service) => setEnquiryContext({ situation, service })} />
         <WhoWeHelp onSelect={openSituation} />
-        <Services />
+        <Services onDiscussService={(service) => setEnquiryContext({ service })} />
         <WhyUs />
         <HowWeWork />
         <OurApproach />
-        <DiscussProject />
+        <DiscussProject context={enquiryContext} />
       </main>
       <SiteFooter />
     </div>
