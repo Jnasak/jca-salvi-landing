@@ -103,7 +103,7 @@ export function Hero() {
                 Story {storyIndex + 1} of 3 · Draft captions for internal review
               </p>
               <h2 className="mt-2 font-display text-xl font-semibold sm:text-2xl">
-                {serviceCategories[storyIndex]?.title ?? serviceCategories[0].title}
+                {serviceCategories[storyIndex]?.title ?? "Business & Workflow Improvement"}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-evergreen-soft">
                 {stories[storyIndex]}
