@@ -14,7 +14,8 @@ export function Hero() {
     "Turn product ideas into clearer plans and actionable next steps.",
     "Bring structure and coordination to important projects.",
   ] as const;
-  const advanceStory = (step: number) => setStoryIndex((current) => (current + step + stories.length) % stories.length);
+  const advanceStory = (step: number) =>
+    setStoryIndex((current) => (current + step + stories.length) % stories.length);
 
   return (
     <section aria-labelledby="hero-title" className="bg-hero relative overflow-hidden">
@@ -98,15 +99,30 @@ export function Hero() {
           >
             <p className="eyebrow text-evergreen-soft">Explore our three service areas</p>
             <div aria-live="polite" aria-atomic="true" className="mt-3 min-h-28">
-              <p className="text-sm text-evergreen-soft">Story {storyIndex + 1} of 3 · Draft captions for internal review</p>
-              <h2 className="mt-2 font-display text-xl font-semibold sm:text-2xl">{serviceCategories[storyIndex].title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-evergreen-soft">{stories[storyIndex]}</p>
+              <p className="text-sm text-evergreen-soft">
+                Story {storyIndex + 1} of 3 · Draft captions for internal review
+              </p>
+              <h2 className="mt-2 font-display text-xl font-semibold sm:text-2xl">
+                {serviceCategories[storyIndex].title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-evergreen-soft">
+                {stories[storyIndex]}
+              </p>
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-2">
-              <button type="button" onClick={() => advanceStory(-1)} aria-label="Previous service story" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-evergreen/30">
+              <button
+                type="button"
+                onClick={() => advanceStory(-1)}
+                aria-label="Previous service story"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-evergreen/30"
+              >
                 <ArrowLeft aria-hidden="true" size={19} />
               </button>
-              <div className="flex items-center gap-2" role="group" aria-label="Select service story">
+              <div
+                className="flex items-center gap-2"
+                role="group"
+                aria-label="Select service story"
+              >
                 {serviceCategories.map((category, index) => (
                   <button
                     type="button"
@@ -120,10 +136,20 @@ export function Hero() {
                   </button>
                 ))}
               </div>
-              <button type="button" onClick={() => advanceStory(1)} aria-label="Next service story" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-evergreen/30">
+              <button
+                type="button"
+                onClick={() => advanceStory(1)}
+                aria-label="Next service story"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-evergreen/30"
+              >
                 <ArrowRight aria-hidden="true" size={19} />
               </button>
-              <a href="#services" className="ml-auto inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4">Explore service details</a>
+              <a
+                href="#services"
+                className="ml-auto inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4"
+              >
+                Explore service details
+              </a>
             </div>
           </div>
         </div>
