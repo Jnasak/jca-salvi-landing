@@ -184,8 +184,8 @@ export function Services({
         <div className="mt-12 max-w-4xl">
           <p className="eyebrow text-evergreen-soft">Service details</p>
           <p className="mt-2 text-sm text-evergreen-soft">
-            Scroll through the categories, or expand any service for its scope. On smaller
-            screens, the cards follow the normal page flow.
+            Scroll through the categories, or expand any service for its scope. On smaller screens,
+            the cards follow the normal page flow.
           </p>
         </div>
         <div className="service-stack-list mt-7">
