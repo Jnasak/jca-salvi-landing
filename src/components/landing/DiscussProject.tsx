@@ -15,7 +15,11 @@ const routes = [
   "One-to-One Strategy Consultation",
 ] as const;
 
-export function DiscussProject({ context }: { context?: { situation?: string; service?: ServiceId } }) {
+export function DiscussProject({
+  context,
+}: {
+  context?: { situation?: string; service?: ServiceId };
+}) {
   const [selectedRoute, setSelectedRoute] = useState<(typeof routes)[number] | null>(null);
   return (
     <section
@@ -49,10 +53,7 @@ export function DiscussProject({ context }: { context?: { situation?: string; se
 
         <div className="mt-10 grid gap-4 text-left md:grid-cols-3">
           {routes.map((route) => (
-            <article
-              key={route}
-              className="rounded-2xl border border-cream/20 bg-cream/[0.07] p-5"
-            >
+            <article key={route} className="rounded-2xl border border-cream/20 bg-cream/[0.07] p-5">
               <h3 className="text-xl font-semibold">{route}</h3>
               <p className="mt-3 text-sm text-on-dark-muted">
                 {route === "Project Discovery"
@@ -80,9 +81,7 @@ export function DiscussProject({ context }: { context?: { situation?: string; se
             Internal prototype — simulated interactions only
           </p>
           {context?.situation && (
-            <p className="mt-3 text-sm">
-              Selected buyer situation: {context.situation}
-            </p>
+            <p className="mt-3 text-sm">Selected buyer situation: {context.situation}</p>
           )}
           {context?.service && (
             <p className="mt-2 text-sm">
@@ -107,19 +106,17 @@ export function DiscussProject({ context }: { context?: { situation?: string; se
                 </ol>
               ) : (
                 <p className="mt-3 text-sm">
-                  Request flow demonstration only. Scheduling and commercial terms
-                  remain subject to approval.
+                  Request flow demonstration only. Scheduling and commercial terms remain subject to
+                  approval.
                 </p>
               )}
             </>
           ) : (
-            <p className="mt-3 text-sm">
-              Select a route above to inspect its simulated next step.
-            </p>
+            <p className="mt-3 text-sm">Select a route above to inspect its simulated next step.</p>
           )}
           <p className="mt-4 text-sm text-on-dark-muted">
-            No information is submitted, stored remotely or transmitted to a booking,
-            payment or enquiry service.
+            No information is submitted, stored remotely or transmitted to a booking, payment or
+            enquiry service.
           </p>
         </div>
 
