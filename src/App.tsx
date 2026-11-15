@@ -13,7 +13,9 @@ import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function App() {
   const [slide, setSlide] = useState(0);
-  const [enquiryContext, setEnquiryContext] = useState<{ situation?: string; service?: ServiceId }>({});
+  const [enquiryContext, setEnquiryContext] = useState<{ situation?: string; service?: ServiceId }>(
+    {},
+  );
 
   const openSituation = useCallback((i: number) => {
     setSlide(i);
@@ -35,7 +37,11 @@ export default function App() {
       <SiteHeader />
       <main id="main">
         <Hero />
-        <BuyerCarousel index={slide} onIndexChange={setSlide} onDiscuss={(situation, service) => setEnquiryContext({ situation, service })} />
+        <BuyerCarousel
+          index={slide}
+          onIndexChange={setSlide}
+          onDiscuss={(situation, service) => setEnquiryContext({ situation, service })}
+        />
         <WhoWeHelp onSelect={openSituation} />
         <Services onDiscussService={(service) => setEnquiryContext({ service })} />
         <WhyUs />
