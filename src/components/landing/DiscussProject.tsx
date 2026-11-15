@@ -18,7 +18,7 @@ const routes = [
 export function DiscussProject({
   context,
 }: {
-  context?: { situation?: string; service?: ServiceId };
+  context?: { situation?: string; service?: ServiceId | undefined };
 }) {
   const [selectedRoute, setSelectedRoute] = useState<(typeof routes)[number] | null>(null);
   return (
