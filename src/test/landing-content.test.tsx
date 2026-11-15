@@ -74,11 +74,11 @@ describe("hero redesign", () => {
     const { heroCopy } = await import("@/content/landing");
     expect(heroCopy.headlineSentences.flat().join(" ")).toBe(heroCopy.headline);
     expect(heroCopy.headline).toBe(
-      "Your business is growing. Let's make the way it works even better.",
+      "Business Challenges Deserve Practical Solutions.",
     );
     expect(heroCopy.eyebrow).toBe("Business, Product & Operations Delivery Partners");
     expect(heroCopy.supporting).toBe(
-      "We help growing teams untangle workflows, clarify product needs and coordinate delivery — with practical solutions scoped around your business.",
+      "We help growing businesses clarify challenges, improve workflows, define product needs and coordinate delivery.",
     );
   });
 
