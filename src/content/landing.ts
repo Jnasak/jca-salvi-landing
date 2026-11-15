@@ -158,7 +158,7 @@ export const heroCopy = {
     ["Solutions."],
   ],
   supporting:
-    "We help growing teams untangle workflows, clarify product needs and coordinate delivery — with practical solutions scoped around your business.",
+    "We help growing businesses clarify challenges, improve workflows, define product needs and coordinate delivery.",
   primaryCta: { label: "Discuss Your Project", href: "#discuss" },
   secondaryCta: { label: "Explore Solutions", href: "#solutions" },
 };
