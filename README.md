@@ -1,146 +1,47 @@
-# JCA × Salvi — Responsive Landing Page
+# Responsive business landing page
 
-**Business, Product & Operations Delivery Partners**
-
-A responsive business and sales landing page that helps visitors recognise business challenges, explore relevant services and begin an appropriately scoped project conversation.
-
-**Status:** In development. Source publication does not mean the website is deployed or that enquiry, booking or email integrations are active.
-
-## Purpose
-
-The website supports service awareness, business-problem discovery and qualified commercial conversations, with growing service-based SMEs and agencies as the priority audience.
-
-The intended buyer journey is:
-
-**Recognise a challenge → Explore a solution → Establish fit → Request a conversation → Qualification**
-
-## Current frontend
-
-- Hero with prominent business messaging and balanced partner-photo placeholders.
-- Manual challenge-and-solution carousel covering six buyer groups.
-- Three service-category flashcards with expand, minimise and maximise interactions.
-- Eight service types with scope-aware descriptions.
-- Partnership introduction and three flexible engagement routes.
-- Illustrative workflow in **Our Approach**, with selectable stages, pause/play and reduced-motion support.
-- Manrope headings, Instrument Sans body text and the Sage & Persimmon palette.
-- Original complete logo, including its signature icon.
-- Internal navigation and an enquiry section clearly identifying the pending connection.
-
-## Audiences
-
-1. Growing service-based SMEs and agencies.
-2. Startup founders and growing businesses.
-3. Product teams and digital businesses.
-4. Programme and project leaders.
-5. Customer experience and operations teams.
-6. E-commerce and operationally complex businesses.
-
-Buyer situations are illustrative; they are not claims about specific organisations.
-
-## Service architecture
-
-| Category | Service types |
-| --- | --- |
-| Business & Workflow Improvement | S01 — Business Systems & Workflow Improvement; S04 — Customer Experience & Operations Improvement; S06 — E-commerce Operations Improvement; S08 — AI & Automation Readiness Solutions |
-| Product & Solution Development Support | S02 — Product Discovery & Improvement; S07 — Product Discovery & Technical Delivery Partnerships |
-| Programme & Project Delivery | S03 — Programme & Project Delivery; S05 — Implementation Recovery & Operational Adoption |
-
-AI and automation readiness does not automatically include implementation. Technical-delivery partnerships do not automatically include software development. Deliverables and responsibilities are agreed for each engagement.
-
-## Engagement routes
-
-- **Discover & Design:** understand the challenge and clarify a suitable approach.
-- **Plan & Execute:** coordinate agreed scope, ownership and delivery activities.
-- **Improve & Sustain:** support agreed adoption, refinement and improvement.
-
-These are flexible routes, not compulsory sequential packages.
-
-## Technology
-
-React · TypeScript · Vite · Tailwind CSS · Radix UI · Vitest · Testing Library.
-
-Development continues locally using Codex within Antigravity. The application runs without Lovable credits or a Lovable asset gateway.
+React, TypeScript, Vite, Tailwind CSS and Radix UI frontend with buyer-situation navigation, expandable service cards, an illustrative workflow and a test-only enquiry form.
 
 ## Run locally
 
-Install Node.js **22.12 or later** and npm, then run:
+Use Node 24 and npm:
 
 ```sh
-git clone https://github.com/Jnasak/jca-salvi-landing.git
-cd jca-salvi-landing
 npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite. Do not open `index.html` directly.
+Open the URL printed by Vite. The application requires no credentials or environment variables. Initial installation and web-font loading use network access; system-font fallbacks are available.
 
-No credentials or environment variables are required for the current frontend. Initial dependency installation needs internet access. Google Fonts use network requests, with system-font fallbacks.
-
-## Validation commands
+## Validate
 
 ```sh
-npm test
+npm audit --omit=dev --audit-level=moderate
+npm audit --audit-level=high
+npm run lint
 npm run typecheck
+npm test
 npm run build
 ```
 
-The prepared source passed **10 automated tests**, TypeScript checking and the local build. Responsive visual review and real-browser interaction checks remain pending; automated checks do not establish accessibility compliance or production readiness.
+Build output is `dist`. The app uses fragment navigation and does not require a catch-all route for its existing page. See [frontend checks](docs/frontend-qa.md) and [dependency notes](docs/dependency-security-triage.md) for technical reproduction and limitations.
 
-Review at **360, 390, 768, 1024 and 1440 pixels**, including keyboard navigation, mobile swipe, dialog focus, reduced motion, contrast and horizontal overflow.
+## Enquiry test
 
-## Project structure
+The form is a simulation with no submission transport or persistent storage. Use synthetic details and an `@example.test` email address. Pending, failure/retry and confirmation are explicitly test states; no enquiry, lead or booking is created.
 
-```text
-public/                  Original logo assets and robots.txt
-src/
-  components/landing/    Landing-page sections and interactions
-  components/ui/         Shared interface components
-  content/landing.ts     Buyer, service and workflow content
-  test/                  Automated checks
-  App.tsx                Page composition
-  main.tsx               Browser entry
-  styles.css             Design tokens and styling
-```
+`netlify/enquiry-form.html` is a definition template outside `public` and `dist`. The rendered form does not carry live detection attributes. The template and URL encoder do not establish a working hosted submission endpoint.
 
-## Remaining development
+## Structure
 
-- Refine the hero with a replaceable, approved joint photograph.
-- Add distinct Discovery Call, Clarity Call and Contact request journeys.
-- Preserve selected buyer/service context into the relevant request journey.
-- Complete form validation, loading, failure/retry and truthful confirmation states.
-- Refine mobile navigation, FAQs and balanced partner profiles.
-- Add project evidence and social proof only when cleared for use.
-- Complete responsive, accessibility and integration review.
-- Connect the approved BOS enquiry pathway after technical clearance.
+- `src/components/landing`: page sections and enquiry UI.
+- `src/components/ui`: shared controls.
+- `src/content`: buyer/service content and enquiry helpers.
+- `src/test`: interaction and regression tests.
+- `src/styles.css`: typography, colour, focus and motion styling.
+- `public`: static assets.
+- `netlify`: non-published form-definition template.
 
-Call requests must not be represented as confirmed appointments. No live enquiries, bookings, client emails, database, authentication or payments are currently enabled.
+Buyer situations and workflow illustrations are examples, not verified client results. Image placeholders are labelled. Automated checks do not establish browser accessibility, live form handling or production readiness.
 
-## Brand and content
-
-| Colour | HEX |
-| --- | --- |
-| Evergreen | `#23483A` |
-| Persimmon | `#EC735B` |
-| Soft Sage | `#D8E7D5` |
-| Warm Cream | `#FFF9F2` |
-| Champagne | `#D6B783` |
-
-Preserve the original logo geometry and complete signature icon. Photograph placeholders must remain clearly labelled until genuine approved images are supplied. Do not invent client names, endorsements, credentials, projects, results or partner likenesses.
-
-## Deployment preparation
-
-Vercel is the intended deployment platform; no deployment is claimed by this repository.
-
-| Setting | Value |
-| --- | --- |
-| Framework preset | Vite |
-| Root directory | Repository root |
-| Install command | `npm ci` |
-| Build command | `npm run build` |
-| Output directory | `dist` |
-
-Confirm an authorised plan suitable for commercial use before deployment. Public release and live enquiry collection require their applicable technical, brand and principal approvals.
-
-## Repository hygiene
-
-Keep credentials, `.env` files, `node_modules`, build output, internal directives and private handover archives out of this public repository. This marketing landing page is separate from the BOS application.
+Keep credentials, environment files, build output and non-public records out of the repository.

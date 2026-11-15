@@ -1,5 +1,8 @@
-import { ArrowUp, Clock, FileText, Lock, Target } from "lucide-react";
+import { ArrowUp, Clock, FileText, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import { EnquiryForm } from "./EnquiryForm";
+import type { EnquiryContext } from "@/content/enquiry";
 
 const bring = [
   { Icon: FileText, label: "A short description" },
@@ -7,7 +10,7 @@ const bring = [
   { Icon: Clock, label: "Your timing" },
 ];
 
-export function DiscussProject() {
+export function DiscussProject({ context }: { context?: EnquiryContext }) {
   return (
     <section
       id="discuss"
@@ -38,21 +41,8 @@ export function DiscussProject() {
           ))}
         </ul>
 
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <Button
-            type="button"
-            variant="unavailable"
-            size="xl"
-            aria-disabled="true"
-            aria-describedby="enquiry-status"
-            onClick={(e) => e.preventDefault()}
-          >
-            <Lock aria-hidden="true" />
-            Enquiry link unavailable
-          </Button>
-          <p id="enquiry-status" className="text-sm font-semibold text-champagne">
-            Enquiry connection pending in this prototype
-          </p>
+        <div className="mx-auto max-w-3xl">
+          <EnquiryForm context={context ?? {}} />
         </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">

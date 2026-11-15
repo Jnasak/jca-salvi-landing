@@ -133,7 +133,7 @@
     radial-gradient(120% 80% at 85% 10%, var(--sage-soft) 0%, transparent 55%),
     radial-gradient(70% 60% at 0% 100%, oklch(0.9411 0.0176 73.07 / 0.9) 0%, transparent 60%);
   --gradient-evergreen:
-    radial-gradient(90% 70% at 100% 0%, oklch(0.42 0.05 165) 0%, transparent 60%),
+    radial-gradient(90% 70% at 100% 0%, oklch(0.4 0.05 165) 0%, transparent 60%),
     linear-gradient(180deg, var(--evergreen) 0%, var(--evergreen-deep) 100%);
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -184,6 +184,11 @@
 
   .on-dark :focus-visible {
     outline-color: var(--champagne);
+  }
+
+  /* Light cards nested in dark sections need a dark focus indicator. */
+  .on-dark .on-light :focus-visible {
+    outline-color: var(--evergreen);
   }
 
   ::selection {
