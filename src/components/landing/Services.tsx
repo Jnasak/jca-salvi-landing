@@ -27,7 +27,7 @@ function ServiceFlashcard({
 }: {
   category: ServiceCategory;
   index: number;
-  onDiscussService?: (service: ServiceId) => void;
+  onDiscussService?: ((service: ServiceId) => void) | undefined;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [maximised, setMaximised] = useState(false);
@@ -152,7 +152,7 @@ function ServiceFlashcard({
 export function Services({
   onDiscussService,
 }: {
-  onDiscussService?: (service: ServiceId) => void;
+  onDiscussService?: ((service: ServiceId) => void) | undefined;
 }) {
   return (
     <section id="services" aria-labelledby="services-title" className="bg-sage-soft py-20 sm:py-28">
