@@ -73,9 +73,7 @@ describe("hero redesign", () => {
   it("uses the approved headline, eyebrow and supporting copy exactly", async () => {
     const { heroCopy } = await import("@/content/landing");
     expect(heroCopy.headlineSentences.flat().join(" ")).toBe(heroCopy.headline);
-    expect(heroCopy.headline).toBe(
-      "Business Challenges Deserve Practical Solutions.",
-    );
+    expect(heroCopy.headline).toBe("Business Challenges Deserve Practical Solutions.");
     expect(heroCopy.eyebrow).toBe("Business, Product & Operations Delivery Partners");
     expect(heroCopy.supporting).toBe(
       "We help growing businesses clarify challenges, improve workflows, define product needs and coordinate delivery.",
