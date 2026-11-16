@@ -6,7 +6,7 @@ import { Faq } from "@/components/landing/Faq";
 import { Hero } from "@/components/landing/Hero";
 import { BuyerCarousel } from "@/components/landing/BuyerCarousel";
 import { ConversationOptions, FinalConversion } from "@/components/landing/AdditionalSections";
-import type { ServiceId } from "@/content/landing";
+import { buyerSituations, type ServiceId } from "@/content/landing";
 import { Services } from "@/components/landing/Services";
 import { WhyUs } from "@/components/landing/WhyUs";
 import { HowWeWork } from "@/components/landing/HowWeWork";
@@ -29,15 +29,24 @@ export default function App({
     const heading = document.getElementById("discuss-title");
     heading?.setAttribute("tabindex", "-1");
     heading?.focus({ preventScroll: true });
+    document.getElementById("discuss")?.scrollIntoView({ block: "start" });
   };
   const [slide, setSlide] = useState(0);
 
   const [requestedService, setRequestedService] = useState<{
     id: ServiceId;
     revision: number;
+    context: EnquiryContext;
   } | null>(null);
   const explore = (id: ServiceId) =>
-    setRequestedService((previous) => ({ id, revision: (previous?.revision ?? 0) + 1 }));
+    setRequestedService((previous) => ({
+      id,
+      revision: (previous?.revision ?? 0) + 1,
+      context: {
+        segment: buyerSituations[slide]!.segment,
+        problem: buyerSituations[slide]!.problem,
+      },
+    }));
 
   return (
     <div id="top" ref={root}>

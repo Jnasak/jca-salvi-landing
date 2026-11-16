@@ -4,17 +4,21 @@ import { Faq } from "@/components/landing/Faq";
 import App from "@/App";
 import { buyerSituations, serviceById } from "@/content/landing";
 import { ConversationOptions } from "@/components/landing/AdditionalSections";
-it("connects each of the six ICPs to every associated canonical service detail", () => {
-  const frames: FrameRequestCallback[] = [];
-  vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
-    frames.push(cb);
-    return frames.length;
-  });
-  render(<App />);
-  for (const s of buyerSituations) {
+it.each(buyerSituations)(
+  "preserves $segment through every mapped service and enquiry",
+  (s) => {
+    const frames: FrameRequestCallback[] = [];
+    vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
+      frames.push(cb);
+      return frames.length;
+    });
+    render(<App />);
+    fireEvent.change(screen.getByLabelText("Full name *"), {
+      target: { value: "Synthetic draft" },
+    });
     fireEvent.click(screen.getByRole("button", { name: s.segment + " " + s.friction }));
-    const panel = screen.getByRole("region", { name: s.problem });
     for (const id of s.serviceIds) {
+      const panel = screen.getByRole("region", { name: s.problem });
       fireEvent.click(within(panel).getByRole("link", { name: new RegExp(id) }));
       act(() => {
         frames.splice(0).forEach((cb) => cb(0));
@@ -25,10 +29,21 @@ it("connects each of the six ICPs to every associated canonical service detail",
           level: 3,
         }),
       ).toHaveFocus();
+      fireEvent.click(screen.getByRole("link", { name: "Discuss this service" }));
+      const form = screen.getByRole("form");
+      expect(form.querySelector('[name="buyer_segment"]')).toHaveValue(s.segment);
+      expect(form.querySelector('[name="buyer_problem"]')).toHaveValue(s.problem);
+      expect(form.querySelector('[name="service_interest"]')).toHaveValue(id);
+      expect(screen.getByLabelText("Full name *")).toHaveValue("Synthetic draft");
+      expect(
+        screen.getByRole("heading", { name: "What would you like to make work better?" }),
+      ).toHaveFocus();
+      expect(form).not.toHaveAttribute("action");
     }
-  }
-  vi.restoreAllMocks();
-});
+    vi.restoreAllMocks();
+  },
+  15000,
+);
 it("keeps three commercial routes distinct and prevents bookings or payment", () => {
   render(<ConversationOptions />);
   expect(screen.getAllByRole("article")).toHaveLength(3);
@@ -53,4 +68,11 @@ it("keeps the existing FAQ accessible without motion", () => {
   });
   fireEvent.click(question);
   expect(question).toHaveAttribute("aria-expanded", "true");
+});
+
+it("keeps internal approval language out of visible page copy", () => {
+  render(<App />);
+  expect(document.body.textContent).not.toMatch(
+    /SIA|principal clearance|awaiting.*approval|internal governance|risk.acceptance|release authori[sz]ation/i,
+  );
 });

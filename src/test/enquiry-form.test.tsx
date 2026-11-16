@@ -2,7 +2,13 @@ import { act, cleanup, fireEvent, render, screen, within } from "@testing-librar
 import { afterEach, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { EnquiryForm } from "@/components/landing/EnquiryForm";
-import { emptyEnquiry, encodeEnquiry, ENQUIRY_FORM_NAME, enquiryFields } from "@/content/enquiry";
+import {
+  emptyEnquiry,
+  validateEnquiry,
+  encodeEnquiry,
+  ENQUIRY_FORM_NAME,
+  enquiryFields,
+} from "@/content/enquiry";
 import App from "@/App";
 
 function complete() {
@@ -10,13 +16,13 @@ function complete() {
   fireEvent.change(screen.getByLabelText("Work email *"), {
     target: { value: "sample@example.test" },
   });
-  fireEvent.change(screen.getByLabelText("Organisation or business name *"), {
+  fireEvent.change(screen.getByLabelText("Organisation or business name (optional)"), {
     target: { value: "Synthetic Company" },
   });
   fireEvent.change(screen.getByLabelText("Business challenge / project description *"), {
     target: { value: "Synthetic project for internal testing." },
   });
-  fireEvent.click(screen.getByRole("checkbox", { name: /I have read the draft/ }));
+  fireEvent.click(screen.getByRole("checkbox", { name: /I understand this demo/ }));
 }
 function submit() {
   fireEvent.click(screen.getByRole("button", { name: "Test enquiry form" }));
@@ -32,11 +38,11 @@ it("links required validation errors and focuses an accessible summary", () => {
   submit();
   const summary = screen.getByRole("alert");
   expect(summary).toHaveFocus();
-  expect(within(summary).getAllByRole("link")).toHaveLength(5);
+  expect(within(summary).getAllByRole("link")).toHaveLength(4);
   const email = screen.getByLabelText("Work email *");
   expect(email).toHaveAttribute("aria-invalid", "true");
   expect(email).toHaveAttribute("aria-describedby", "error-email");
-  expect(screen.getByRole("checkbox", { name: /I have read the draft/ })).not.toBeChecked();
+  expect(screen.getByRole("checkbox", { name: /I understand this demo/ })).not.toBeChecked();
 });
 
 it("simulates one pending/confirmation journey without network or persistent storage", () => {
@@ -65,7 +71,9 @@ it("retains input through simulated failure and allows deliberate recovery", () 
   submit();
   act(() => vi.advanceTimersByTime(350));
   expect(screen.getByRole("alert")).toHaveFocus();
-  expect(screen.getByLabelText("Organisation or business name *")).toHaveValue("Synthetic Company");
+  expect(screen.getByLabelText("Organisation or business name (optional)")).toHaveValue(
+    "Synthetic Company",
+  );
   fireEvent.click(screen.getByRole("checkbox", { name: "Simulate a submission failure" }));
   submit();
   act(() => vi.advanceTimersByTime(350));
@@ -86,6 +94,7 @@ it("requires synthetic addresses in this build and keeps optional fields optiona
   });
   submit();
   expect(screen.getByRole("alert")).toHaveTextContent("@example.test");
+  expect(screen.getByLabelText(/Organisation or business name/)).not.toBeRequired();
   expect(screen.getByLabelText(/Phone \/ WhatsApp/)).not.toBeRequired();
   expect(screen.getByLabelText(/Area of support/)).not.toBeRequired();
   expect(screen.queryByText(/marketing opt-in/i)).not.toBeInTheDocument();
@@ -140,4 +149,25 @@ it("rejects an invalid optional phone and catches a filled honeypot in the inter
   submit();
   act(() => vi.advanceTimersByTime(350));
   expect(screen.getByRole("alert")).toHaveTextContent("Simulated failure — no enquiry sent");
+});
+
+it("accepts a blank organisation in validation, encoding and demo completion", () => {
+  vi.useFakeTimers();
+  const values = {
+    ...emptyEnquiry,
+    full_name: "Example",
+    email: "example@example.test",
+    description: "Synthetic challenge",
+    privacy_acknowledged: true,
+  };
+  expect(validateEnquiry(values)).toEqual({});
+  expect(new URLSearchParams(encodeEnquiry(values, {})).get("organisation")).toBe("");
+  render(<EnquiryForm />);
+  complete();
+  fireEvent.change(screen.getByLabelText(/Organisation or business name/), {
+    target: { value: "" },
+  });
+  submit();
+  act(() => vi.advanceTimersByTime(350));
+  expect(screen.getByRole("heading", { name: "Test complete — no enquiry sent" })).toBeVisible();
 });

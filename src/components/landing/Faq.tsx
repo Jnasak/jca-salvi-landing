@@ -55,7 +55,7 @@ export function Faq() {
             Questions before we begin?
           </h2>
           <p className="mt-5 text-sm text-evergreen-soft">
-            Internal preview copy — pending SIA and principal clearance.
+            Explore the support available and how to get started.
           </p>
         </div>
         <Accordion

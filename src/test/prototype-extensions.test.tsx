@@ -17,7 +17,7 @@ describe("evidence-controlled project presentation", () => {
     render(<Projects projects={[item]} />);
     expect(screen.queryByText(item.title)).not.toBeInTheDocument();
     expect(screen.queryByText(item.summary)).not.toBeInTheDocument();
-    expect(screen.getAllByText("Project evidence pending publication approval")).toHaveLength(3);
+    expect(screen.getByText("Project stories coming soon.")).toBeVisible();
     expect(canPublishProject(item)).toBe(false);
     expect(
       canPublishProject({

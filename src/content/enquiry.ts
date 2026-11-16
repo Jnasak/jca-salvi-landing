@@ -42,7 +42,6 @@ export function validateEnquiry(values: EnquiryValues): EnquiryErrors {
   if (!values.full_name.trim()) errors.full_name = "Enter your full name.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()))
     errors.email = "Enter a valid work email address.";
-  if (!values.organisation.trim()) errors.organisation = "Enter your organisation or trading name.";
   if (!values.description.trim())
     errors.description = "Describe your business challenge or project.";
   if (
@@ -63,7 +62,7 @@ export function validateEnquiry(values: EnquiryValues): EnquiryErrors {
   )
     errors.phone = "Enter a phone number using digits and ordinary separators, or leave it blank.";
   if (!values.privacy_acknowledged)
-    errors.privacy_acknowledged = "Acknowledge the draft notice for this internal test.";
+    errors.privacy_acknowledged = "Confirm that you understand this demo does not send an enquiry.";
   return errors;
 }
 /** Prepared encoding only; no transport or live activation. */

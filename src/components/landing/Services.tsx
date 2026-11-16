@@ -52,11 +52,12 @@ export function Services({
   requested,
 }: {
   onDiscuss?: (c: EnquiryContext) => void;
-  requested?: { id: ServiceId; revision: number } | null;
+  requested?: { id: ServiceId; revision: number; context?: EnquiryContext } | null;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const pendingFocus = useRef<number | null>(null);
   const [selected, setSelected] = useState<ServiceId>("S01");
+  const [origin, setOrigin] = useState<EnquiryContext>({});
   const canStack = useServiceStack(ref, []);
   useEffect(
     () => () => {
@@ -65,8 +66,9 @@ export function Services({
     [],
   );
   const activeCategory = serviceCategories.find((c) => c.services.some((s) => s.id === selected))!;
-  function reveal(id: ServiceId) {
+  function reveal(id: ServiceId, context: EnquiryContext = {}) {
     setSelected(id);
+    setOrigin(context);
     if (pendingFocus.current !== null) window.cancelAnimationFrame(pendingFocus.current);
     pendingFocus.current = window.requestAnimationFrame(() => {
       pendingFocus.current = null;
@@ -76,7 +78,7 @@ export function Services({
     });
   }
   useEffect(() => {
-    if (requested) reveal(requested.id);
+    if (requested) reveal(requested.id, requested.context);
   }, [requested]);
   return (
     <section
@@ -104,7 +106,6 @@ export function Services({
               <div>
                 <Icon aria-hidden="true" size={30} />
                 <h3>{c.title}</h3>
-                <p>{c.summary}</p>
                 <span>
                   {c.services.length} service types <ArrowRight size={17} aria-hidden="true" />
                 </span>
@@ -167,7 +168,10 @@ export function Services({
           <select
             id="service-choice"
             value={selected}
-            onChange={(e) => setSelected(e.target.value as ServiceId)}
+            onChange={(e) => {
+              setSelected(e.target.value as ServiceId);
+              setOrigin({});
+            }}
           >
             {serviceCategories.map((c) => (
               <optgroup key={c.title} label={c.title}>
@@ -197,7 +201,7 @@ export function Services({
             onClick={(e) => {
               e.preventDefault();
               if (pendingFocus.current !== null) window.cancelAnimationFrame(pendingFocus.current);
-              onDiscuss?.({ serviceIds: [selected] });
+              onDiscuss?.({ ...origin, serviceIds: [selected] });
               const h = document.getElementById("discuss-title");
               h?.setAttribute("tabindex", "-1");
               h?.focus({ preventScroll: true });

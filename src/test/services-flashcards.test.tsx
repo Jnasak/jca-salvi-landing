@@ -60,9 +60,9 @@ describe("service discovery", () => {
 it("keeps equal partner recognition and six proposed benefits", () => {
   render(<WhyUs />);
   expect(screen.getAllByRole("article")).toHaveLength(6);
-  expect(screen.getByRole("img", { name: "JCA — approved portrait pending" })).toBeVisible();
-  expect(screen.getByRole("img", { name: "Salvi — approved portrait pending" })).toBeVisible();
-  expect(screen.getByText(/Proposed benefit statements/)).toBeVisible();
+  expect(screen.getByRole("img", { name: "JCA — portrait placeholder" })).toBeVisible();
+  expect(screen.getByRole("img", { name: "Salvi — portrait placeholder" })).toBeVisible();
+  expect(screen.getByText(/Partner portraits are placeholders/)).toBeVisible();
   expect(screen.getByRole("link", { name: /Discuss Your Project/ })).toHaveAttribute(
     "href",
     "#discuss",

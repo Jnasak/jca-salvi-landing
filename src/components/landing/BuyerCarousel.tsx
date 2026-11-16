@@ -96,13 +96,14 @@ export function BuyerCarousel({
           <a
             className="text-action"
             href="#discuss"
-            onClick={() =>
+            onClick={(event) => {
+              event.preventDefault();
               onDiscuss?.({
                 segment: situation.segment,
                 problem: situation.problem,
                 serviceIds: situation.serviceIds,
-              })
-            }
+              });
+            }}
           >
             {situation.cta} <ArrowRight size={17} aria-hidden="true" />
           </a>

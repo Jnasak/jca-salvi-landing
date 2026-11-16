@@ -4,7 +4,7 @@ export function ReferenceMedia({ index, className = "" }: { index: number; class
     <div
       className={`reference-media reference-media-${index} ${className}`}
       role="img"
-      aria-label="Illustrative scene from the approved design reference; not a photograph of JCA or Salvi"
+      aria-label="Illustrative business scene; not a photograph of JCA or Salvi"
     />
   );
 }

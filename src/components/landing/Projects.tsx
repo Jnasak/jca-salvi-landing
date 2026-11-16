@@ -1,5 +1,4 @@
 import { ArrowUpRight, FolderSearch, ShieldCheck } from "lucide-react";
-import { serviceCategories } from "@/content/landing";
 
 export interface ProjectCaseStudy {
   id: string;
@@ -32,46 +31,37 @@ export function Projects({ projects = [] }: { projects?: readonly ProjectCaseStu
           What meaningful delivery looks like.
         </h2>
         <p className="mt-5 max-w-3xl text-evergreen-soft">
-          Examples will be shared only when evidence and permission to publish are confirmed.
+          Explore our approach to practical delivery.
         </p>
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {publishable.length > 0
-            ? publishable.map((item) => (
-                <article
-                  key={item.id}
-                  className="flex flex-col rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft"
-                >
-                  <ShieldCheck aria-hidden="true" className="size-6" />
-                  <p className="mt-6 text-xs uppercase tracking-wider">{item.category}</p>
-                  <h3 className="mt-2 text-2xl font-medium">{item.title}</h3>
-                  <p className="mt-3 text-evergreen-soft">{item.summary}</p>
-                  <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold">
-                    Approved project example
-                    <ArrowUpRight aria-hidden="true" className="size-4" />
-                  </span>
-                </article>
-              ))
-            : serviceCategories.map((category) => (
-                <article
-                  key={category.title}
-                  className="flex flex-col rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft"
-                >
-                  <FolderSearch aria-hidden="true" className="size-6" />
-                  <p className="mt-6 text-xs uppercase tracking-wider">Service area</p>
-                  <h3 className="mt-2 text-2xl font-medium">{category.title}</h3>
-                  <p className="mt-3 text-evergreen-soft">{category.summary}</p>
-                  <p className="mt-auto pt-6 text-sm font-semibold text-evergreen-soft">
-                    Project evidence pending publication approval
-                  </p>
-                </article>
-              ))}
+          {publishable.length > 0 ? (
+            publishable.map((item) => (
+              <article
+                key={item.id}
+                className="flex flex-col rounded-3xl border border-evergreen/15 bg-paper p-6 shadow-soft"
+              >
+                <ShieldCheck aria-hidden="true" className="size-6" />
+                <p className="mt-6 text-xs uppercase tracking-wider">{item.category}</p>
+                <h3 className="mt-2 text-2xl font-medium">{item.title}</h3>
+                <p className="mt-3 text-evergreen-soft">{item.summary}</p>
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold">
+                  Project example
+                  <ArrowUpRight aria-hidden="true" className="size-4" />
+                </span>
+              </article>
+            ))
+          ) : (
+            <article className="evidence-empty md:col-span-2 lg:col-span-3">
+              <FolderSearch aria-hidden="true" className="size-7" />
+              <div>
+                <h3 className="text-2xl font-medium">Project stories coming soon.</h3>
+                <p className="mt-3 text-evergreen-soft">
+                  No client projects or results are presented in this design preview.
+                </p>
+              </div>
+            </article>
+          )}
         </div>
-        {publishable.length === 0 && (
-          <p className="mt-6 text-sm text-evergreen-soft">
-            These are service-area placeholders, not client projects or evidence of delivered
-            results.
-          </p>
-        )}
       </div>
     </section>
   );

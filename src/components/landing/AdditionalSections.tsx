@@ -11,17 +11,14 @@ export function ConversationOptions() {
       <h2 id="conversation-title" className="editorial-title">
         Let’s Start with the Right Conversation
       </h2>
-      <p className="prototype-note">
-        Internal design only · commercial terms and availability remain subject to approval.
-      </p>
+      <p className="prototype-note">Design preview · booking and payment are unavailable.</p>
       <div className="conversation-grid">
         <article className="conversation-card">
           <span className="eyebrow">01 / Proposed introduction</span>
           <h3>Free Enquiry Call</h3>
           <p>Ask about services and explore whether the partnership may be able to help.</p>
           <p className="prototype-note">
-            Proposed free-call route. Entitlement, duration, availability and ownership are
-            unconfirmed.
+            Illustrative introduction route only. No free call can be booked in this preview.
           </p>
           <button type="button" disabled>
             <LockKeyhole size={16} aria-hidden="true" /> Booking not enabled
@@ -52,8 +49,7 @@ export function ConversationOptions() {
             project challenge.
           </p>
           <p className="prototype-note">
-            Proposed paid route. Scope, fees and terms await approval; no payment or booking is
-            available.
+            Scope, fees and availability are agreed separately. Booking and payment are unavailable.
           </p>
           <button type="button" disabled>
             <LockKeyhole size={16} aria-hidden="true" /> Consultation not enabled
@@ -75,7 +71,7 @@ export function FinalConversion() {
         <a className="primary-action" href="#discuss">
           Discuss Your Project <ArrowRight aria-hidden="true" size={18} />
         </a>
-        <p className="prototype-note">Proposed copy · enquiry remains a non-live internal test.</p>
+        <p className="prototype-note">Design preview · no enquiry is sent.</p>
       </div>
     </section>
   );

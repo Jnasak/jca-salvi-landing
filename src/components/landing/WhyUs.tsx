@@ -72,7 +72,7 @@ export function WhyUs() {
           </div>
           <div className="partner-grid">
             <div className="partner-profile">
-              <PortraitPlaceholder name="JCA" label="JCA — approved portrait pending" index={1} />
+              <PortraitPlaceholder name="JCA" label="JCA — portrait placeholder" index={1} />
               <div>
                 <p className="eyebrow">JCA — Business & Product</p>
                 <h3>Business Analysis + Product Management</h3>
@@ -80,11 +80,7 @@ export function WhyUs() {
               </div>
             </div>
             <div className="partner-profile">
-              <PortraitPlaceholder
-                name="Salvi"
-                label="Salvi — approved portrait pending"
-                index={2}
-              />
+              <PortraitPlaceholder name="Salvi" label="Salvi — portrait placeholder" index={2} />
               <div>
                 <p className="eyebrow">Salvi — Programme & Operations</p>
                 <h3>Programme, project & operational coordination</h3>
@@ -93,8 +89,7 @@ export function WhyUs() {
             </div>
           </div>
           <p className="prototype-note benefits-disclosure">
-            Proposed benefit statements — awaiting SIA and principal clearance. Partner portraits
-            are placeholders.
+            Partner portraits are placeholders in this design preview.
           </p>
           <div ref={gridRef} className="benefits-grid">
             {benefits.map((benefit, index) => (

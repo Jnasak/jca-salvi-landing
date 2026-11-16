@@ -45,7 +45,7 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
     const next = validateEnquiry(values);
     // This build deliberately has no live transport. Use reserved synthetic addresses in tests.
     if (!next.email && !values.email.trim().toLowerCase().endsWith("@example.test"))
-      next.email = "For this internal test, use an address ending in @example.test.";
+      next.email = "For this demo, use an address ending in @example.test.";
     setErrors(next);
     if (Object.keys(next).length) {
       setStatus("idle");
@@ -79,8 +79,8 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
         id="enquiry-demo"
         className="rounded-xl border border-evergreen/30 bg-sage-soft p-4 text-sm"
       >
-        <strong>JS BusinessSuite — internal form test.</strong> Use synthetic details only,
-        including an @example.test email. Nothing is sent or stored. Live enquiries are not enabled.
+        <strong>JS BusinessSuite — demo form.</strong> Use synthetic details only, including an
+        @example.test email. Nothing is sent or stored. Live enquiries are not enabled.
       </p>
       {status === "success" ? (
         <div
@@ -112,7 +112,7 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
           name={ENQUIRY_FORM_NAME}
           noValidate
           onSubmit={submit}
-          aria-label="Discuss Your Project — internal test"
+          aria-label="Discuss Your Project — demo"
           aria-describedby="enquiry-demo"
           aria-busy={status === "pending"}
         >
@@ -178,17 +178,17 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
           )}
           <fieldset disabled={status === "pending"} className="mt-6 min-w-0 space-y-5">
             <legend className="mb-4 text-sm">
-              Fields marked * are required. Organisation can be your trading name.
+              Fields marked * are required. Organisation or business name is optional.
             </legend>
             <div className="grid gap-5 sm:grid-cols-2">
               {(["full_name", "email", "organisation"] as const).map((key) => (
                 <div key={key}>
                   <label className="font-medium" htmlFor={`enquiry-${key}`}>
-                    {labels[key]} *
+                    {labels[key]} {key === "organisation" ? "(optional)" : "*"}
                   </label>
                   <input
                     {...attrs(key)}
-                    required
+                    required={key !== "organisation"}
                     type={key === "email" ? "email" : "text"}
                     autoComplete={
                       key === "full_name" ? "name" : key === "email" ? "email" : "organization"
@@ -277,11 +277,10 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
               </div>
             </div>
             <div className="rounded-xl bg-sage-soft p-4">
-              <h3 className="text-lg font-semibold">Privacy notice — draft for internal review</h3>
+              <h3 className="text-lg font-semibold">About this demo form</h3>
               <p className="mt-2 text-sm">
-                The intended purpose is to review project enquiries and discuss relevant next steps.
-                The final Privacy Notice, responsible contact and retention arrangements are not yet
-                available. No live information is collected in this test.
+                Use fictional details to explore the form. Entries stay in this page while it is
+                open; nothing is sent or saved, and no enquiry or appointment is created.
               </p>
               <label className="mt-3 flex min-h-11 cursor-pointer items-start gap-3 py-2">
                 <input
@@ -292,7 +291,7 @@ export function EnquiryForm({ context = {} }: { context?: EnquiryContext }) {
                   onChange={(e) => update("privacy_acknowledged", e.target.checked)}
                   className="mt-1 size-5 shrink-0 accent-evergreen"
                 />
-                <span>I have read the draft notice for this internal test. *</span>
+                <span>I understand this demo does not send an enquiry. *</span>
               </label>
               {error("privacy_acknowledged")}
             </div>

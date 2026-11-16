@@ -172,8 +172,8 @@ export const heroStories = [
 
 /** Equal partner frames. Approved photos are not yet supplied — never substitute people imagery. */
 export const partners = [
-  { name: "JCA", label: "JCA — approved portrait pending" },
-  { name: "Salvi", label: "Salvi — approved portrait pending" },
+  { name: "JCA", label: "JCA — portrait placeholder" },
+  { name: "Salvi", label: "Salvi — portrait placeholder" },
 ] as const;
 
 export const approachCopy = {

@@ -113,8 +113,7 @@ export function Hero() {
           </div>
         </div>
         <p className="prototype-note">
-          Internal prototype · reference imagery is illustrative; authentic partner photography
-          awaits clearance.
+          Design preview · imagery is illustrative and does not depict the partners.
         </p>
       </div>
     </section>

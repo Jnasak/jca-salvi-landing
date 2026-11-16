@@ -5,9 +5,7 @@ it("renders the local landing page with one preserved workflow and no live enqui
   render(<App />);
   expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
   expect(screen.getAllByRole("tablist", { name: "Workflow focus areas" })).toHaveLength(1);
-  expect(
-    screen.getByRole("form", { name: "Discuss Your Project — internal test" }),
-  ).toBeInTheDocument();
+  expect(screen.getByRole("form", { name: "Discuss Your Project — demo" })).toBeInTheDocument();
   expect(document.getElementById("enquiry-demo")).toHaveTextContent(/Nothing is sent or stored/);
   expect(document.querySelector("form[data-netlify]")).toBeNull();
 });
