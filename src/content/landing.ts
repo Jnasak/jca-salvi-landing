@@ -67,7 +67,7 @@ export interface BuyerSituation {
 
 export const buyerSituations: BuyerSituation[] = [
   {
-    segment: "Growing service businesses and agencies",
+    segment: "Service-Based SMEs & Agencies",
     shortLabel: "Service businesses",
     problem: "Fragmented enquiries, onboarding, responsibilities and delivery.",
     friction: "Repeated work and lost handoff context.",
@@ -81,7 +81,7 @@ export const buyerSituations: BuyerSituation[] = [
     cta: "Discuss your client workflow",
   },
   {
-    segment: "Startup founders and growing businesses",
+    segment: "Startup Founders & Growing Businesses",
     shortLabel: "Founders",
     problem: "Unclear ideas, operational priorities and business requirements.",
     friction: "Difficulty deciding what to do first.",
@@ -95,7 +95,7 @@ export const buyerSituations: BuyerSituation[] = [
     cta: "Discuss your business priorities",
   },
   {
-    segment: "Product teams and digital businesses",
+    segment: "Product Teams & Digital Businesses",
     shortLabel: "Product teams",
     problem: "Unclear product problems, stakeholder requirements and priorities.",
     friction: "Misaligned decisions and delivery briefs.",
@@ -109,7 +109,7 @@ export const buyerSituations: BuyerSituation[] = [
     cta: "Discuss your product challenge",
   },
   {
-    segment: "Programme and project leaders",
+    segment: "Programme & Project Leaders",
     shortLabel: "Programme leaders",
     problem: "Unclear ownership, missed handoffs and execution gaps.",
     friction: "Stalled decisions and dependencies.",
@@ -118,7 +118,7 @@ export const buyerSituations: BuyerSituation[] = [
     cta: "Discuss your delivery challenge",
   },
   {
-    segment: "Customer experience and operations teams",
+    segment: "Customer Experience & Operations Teams",
     shortLabel: "CX & operations",
     problem: "Inconsistent enquiries, onboarding, follow-ups and service processes.",
     friction: "Repeated information and broken continuity.",
@@ -132,7 +132,7 @@ export const buyerSituations: BuyerSituation[] = [
     cta: "Discuss your customer journey",
   },
   {
-    segment: "E-commerce and operationally complex businesses",
+    segment: "E-commerce & Operationally Complex Businesses",
     shortLabel: "E-commerce & complex ops",
     problem: "Disconnected order, service and fulfilment workflows.",
     friction: "Hard-to-track status and exceptions.",
@@ -147,26 +147,33 @@ export const buyerSituations: BuyerSituation[] = [
 ];
 
 export const heroCopy = {
-  eyebrow: "Business, Product & Operations Delivery Partners",
-  headline: "Your business is growing. Let's make the way it works even better.",
-  /**
-   * Intentional line breaks (shown from small tablets up), grouped by sentence.
-   * Joined with spaces they equal `headline`. The final line carries the single persimmon rule.
-   */
-  headlineSentences: [
-    ["Your business", "is growing."],
-    ["Let's make", "the way it works", "even better."],
-  ],
+  eyebrow: "JS BusinessSuite — Business, Product & Operations Delivery Partners",
+  headline: "Business Challenges Deserve Practical Solutions.",
   supporting:
-    "We help growing teams untangle workflows, clarify product needs and coordinate delivery — with practical solutions scoped around your business.",
+    "We help growing businesses clarify challenges, improve workflows, define product needs and coordinate delivery.",
   primaryCta: { label: "Discuss Your Project", href: "#discuss" },
   secondaryCta: { label: "Explore Solutions", href: "#solutions" },
 };
 
+export const heroStories = [
+  {
+    title: "Make the way your business works work better.",
+    caption: "Clarify workflows, connect operations and improve customer experiences.",
+  },
+  {
+    title: "Turn product needs into clearer next steps.",
+    caption: "Understand the problem, define requirements and coordinate scoped delivery.",
+  },
+  {
+    title: "Coordinate the work that moves your business forward.",
+    caption: "Improve delivery visibility, accountability and operational coordination.",
+  },
+] as const;
+
 /** Equal partner frames. Approved photos are not yet supplied — never substitute people imagery. */
 export const partners = [
-  { name: "JCA", label: "JCA — approved portrait pending" },
-  { name: "Salvi", label: "Salvi — approved portrait pending" },
+  { name: "JCA", label: "JCA — portrait placeholder" },
+  { name: "Salvi", label: "Salvi — portrait placeholder" },
 ] as const;
 
 export const approachCopy = {
@@ -234,19 +241,19 @@ export const workRoutes = [
 
 export const approachSteps = [
   {
-    title: "Understand the Problem",
+    title: "Understand",
     body: "Listen, map the current situation and agree what needs improving.",
   },
   {
-    title: "Design the Improvement",
+    title: "Define",
     body: "Shape a practical, clearly scoped response to the agreed problem.",
   },
   {
-    title: "Coordinate Delivery",
+    title: "Coordinate",
     body: "Plan the work, clarify responsibilities and keep it moving.",
   },
   {
-    title: "Support Adoption",
+    title: "Improve",
     body: "Help people use the change in day-to-day work.",
   },
 ];

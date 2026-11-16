@@ -45,61 +45,39 @@ function Harness() {
   return <BuyerCarousel index={i} onIndexChange={setI} />;
 }
 
-describe("buyer carousel", () => {
-  it("moves with Next/Previous, wraps, and supports arrow keys on tabs", () => {
+describe("approved editorial interactions", () => {
+  it("reveals all six ICP challenges and functional service routes", () => {
     render(<Harness />);
-    const tabs = screen.getAllByRole("tab");
-    expect(tabs).toHaveLength(6);
-    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.click(screen.getByRole("button", { name: "Next situation" }));
-    expect(screen.getAllByRole("tab")[1]).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(screen.getAllByRole("tab")[1]!, { key: "ArrowRight" });
-    expect(screen.getAllByRole("tab")[2]).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.keyDown(screen.getAllByRole("tab")[2]!, { key: "End" });
-    expect(screen.getAllByRole("tab")[5]).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.click(screen.getByRole("button", { name: "Next situation" }));
-    expect(screen.getAllByRole("tab")[0]).toHaveAttribute("aria-selected", "true");
-
-    fireEvent.click(screen.getByRole("button", { name: "Previous situation" }));
-    expect(screen.getAllByRole("tab")[5]).toHaveAttribute("aria-selected", "true");
+    buyerSituations.forEach((s) => {
+      fireEvent.click(screen.getByRole("button", { name: s.segment + " " + s.friction }));
+      expect(screen.getByRole("heading", { name: s.problem })).toBeVisible();
+      s.serviceIds.forEach((id) =>
+        expect(screen.getByRole("link", { name: new RegExp(id) })).toHaveAttribute(
+          "href",
+          "#service-explorer",
+        ),
+      );
+    });
   });
-});
-
-describe("hero redesign", () => {
-  it("uses the approved headline, eyebrow and supporting copy exactly", async () => {
-    const { heroCopy } = await import("@/content/landing");
-    expect(heroCopy.headlineSentences.flat().join(" ")).toBe(heroCopy.headline);
-    expect(heroCopy.headline).toBe(
-      "Your business is growing. Let's make the way it works even better.",
-    );
-    expect(heroCopy.eyebrow).toBe("Business, Product & Operations Delivery Partners");
-    expect(heroCopy.supporting).toBe(
-      "We help growing teams untangle workflows, clarify product needs and coordinate delivery — with practical solutions scoped around your business.",
-    );
-  });
-
-  it("links the hero CTAs to #discuss and #solutions and shows both pending portraits, without the workflow graphic", async () => {
+  it("keeps the fixed proposition and actions mounted while three manual stories change", async () => {
     const { Hero } = await import("@/components/landing/Hero");
     render(<Hero />);
-    expect(screen.getByRole("link", { name: /Discuss Your Project/ })).toHaveAttribute(
-      "href",
-      "#discuss",
-    );
-    expect(screen.getByRole("link", { name: /Explore Solutions/ })).toHaveAttribute(
+    const title = screen.getByRole("heading", {
+      level: 1,
+      name: "Business Challenges Deserve Practical Solutions.",
+    });
+    const cta = screen.getByRole("link", { name: "Discuss Your Project" });
+    fireEvent.click(screen.getByRole("button", { name: "Next service story" }));
+    expect(screen.getByRole("tab", { selected: true })).toHaveAccessibleName(/Story 2/);
+    expect(screen.getByRole("heading", { level: 1 })).toBe(title);
+    expect(screen.getByRole("link", { name: "Discuss Your Project" })).toBe(cta);
+    fireEvent.keyDown(screen.getByRole("tab", { selected: true }), { key: "End" });
+    expect(screen.getByRole("tab", { selected: true })).toHaveAccessibleName(/Story 3/);
+    expect(screen.getAllByRole("tabpanel")).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "Explore Solutions" })).toHaveAttribute(
       "href",
       "#solutions",
     );
-    expect(
-      screen.getByRole("img", { name: "JCA — approved portrait pending" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("img", { name: "Salvi — approved portrait pending" }),
-    ).toBeInTheDocument();
-    expect(screen.queryByRole("tablist", { name: "Workflow focus areas" })).toBeNull();
   });
 
   it("shows the workflow graphic once, in Our Approach, with its pause control and three tabs", async () => {

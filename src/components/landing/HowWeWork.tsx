@@ -7,14 +7,14 @@ const icons: LucideIcon[] = [Compass, ListChecks, RefreshCcw];
 export function HowWeWork() {
   return (
     <section
-      id="how-we-work"
+      id="ways-to-work"
       aria-labelledby="how-title"
       className="on-dark bg-evergreen-rich py-20 text-cream sm:py-28"
     >
       <div className="container-page">
         <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
           <div>
-            <p className="eyebrow text-champagne">How We Work</p>
+            <p className="eyebrow text-champagne">Ways to Work With Us</p>
             <h2 id="how-title" className="mt-4 text-4xl font-medium sm:text-5xl">
               Three routes in. Start where it helps.
             </h2>
@@ -40,7 +40,22 @@ export function HowWeWork() {
                 </p>
                 <h3 className="mt-2 text-2xl font-medium sm:text-3xl">{r.title}</h3>
                 <p className="mt-3 text-on-dark-muted">{r.body}</p>
-                <p className="mt-auto border-t border-cream/15 pt-5 text-sm text-cream">{r.fit}</p>
+                <details className="route-detail">
+                  <summary>When this route helps</summary>
+                  <p>{r.fit}</p>
+                  <p>
+                    Indicative deliverables:{" "}
+                    {i === 0
+                      ? "discovery findings, workflow maps and requirements"
+                      : i === 1
+                        ? "delivery plans, responsibility maps and coordination records"
+                        : "improvement priorities, adoption and handover plans"}
+                    .
+                  </p>
+                  <a href="#discuss" className="text-action">
+                    Discuss this route
+                  </a>
+                </details>
               </li>
             );
           })}

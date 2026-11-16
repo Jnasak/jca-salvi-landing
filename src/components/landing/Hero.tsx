@@ -1,86 +1,120 @@
-import { ArrowDown, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { heroCopy, partners } from "@/content/landing";
-import { PortraitPlaceholder } from "./PortraitPlaceholder";
+import { useRef, useState, type KeyboardEvent } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { heroCopy, heroStories, serviceCategories } from "@/content/landing";
+import { ReferenceMedia } from "./ReferenceMedia";
 
-/** Editorial brand opening: headline and CTAs, with equal JCA and Salvi frames as the main visual. */
+/** Proposition and CTAs never belong to the changing slide or its animation. No autoplay. */
 export function Hero() {
-  const sentences = heroCopy.headlineSentences;
-  const lastSentence = sentences.length - 1;
-
+  const [index, setIndex] = useState(0);
+  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
+  function key(event: KeyboardEvent, current: number) {
+    const next =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? 2
+          : event.key === "ArrowRight"
+            ? (current + 1) % 3
+            : event.key === "ArrowLeft"
+              ? (current + 2) % 3
+              : null;
+    if (next === null) return;
+    event.preventDefault();
+    setIndex(next);
+    buttons.current[next]?.focus();
+  }
   return (
-    <section aria-labelledby="hero-title" className="bg-hero relative overflow-hidden">
-      <div className="container-page grid gap-10 pb-14 pt-10 sm:gap-14 sm:pb-20 sm:pt-16 lg:grid-cols-2 lg:items-center lg:gap-14 lg:pb-28 lg:pt-20 xl:gap-20">
-        <div className="min-w-0">
-          <p className="eyebrow enter-rise flex items-center gap-3 text-evergreen-soft">
-            <span aria-hidden="true" className="h-px w-8 shrink-0 bg-champagne sm:w-10" />
-            {heroCopy.eyebrow}
-          </p>
-
-          <h1
-            id="hero-title"
-            className="enter-rise mt-6 text-[2.5rem] font-normal leading-[1.03] tracking-[-0.025em] text-evergreen [--d:90ms] min-[390px]:text-[2.75rem] sm:mt-7 sm:text-[3.9rem] lg:text-[3.55rem] xl:text-[4.35rem]"
-          >
-            {sentences.map((lines, si) => (
-              <span key={si} className={si > 0 ? "mt-1 block sm:mt-2" : "block"}>
-                {lines.map((line, li) => {
-                  const accent = si === lastSentence && li === lines.length - 1;
-                  return (
-                    <span key={line} className="sm:block">
-                      {accent ? (
-                        <span className="relative inline-block">
-                          {line}
-                          <span
-                            aria-hidden="true"
-                            className="enter-rule absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-persimmon sm:-bottom-1.5"
-                          />
-                        </span>
-                      ) : (
-                        line
-                      )}
-                      {li < lines.length - 1 ? " " : ""}
-                    </span>
-                  );
-                })}{" "}
-              </span>
-            ))}
+    <section className="hero-intro container-page" aria-labelledby="hero-title">
+      <div className="editorial-hero">
+        <div className="hero-proposition">
+          <p className="eyebrow">{heroCopy.eyebrow}</p>
+          <h1 id="hero-title" aria-label={heroCopy.headline}>
+            {heroCopy.headline.slice(0, -1)}
+            <span className="accent-dot">.</span>
           </h1>
-
-          <p className="enter-rise mt-7 max-w-[34rem] text-lg leading-relaxed text-evergreen [--d:200ms] sm:mt-9 sm:text-xl">
-            {heroCopy.supporting}
-          </p>
-
-          <div className="enter-rise mt-8 flex flex-col gap-3 [--d:300ms] sm:mt-10 sm:flex-row sm:flex-wrap">
-            <Button asChild variant="hero" size="xl">
-              <a href={heroCopy.primaryCta.href}>
-                {heroCopy.primaryCta.label}
-                <ArrowRight aria-hidden="true" />
-              </a>
-            </Button>
-            <Button asChild variant="heroOutline" size="xl">
-              <a href={heroCopy.secondaryCta.href}>
-                {heroCopy.secondaryCta.label}
-                <ArrowDown aria-hidden="true" />
-              </a>
-            </Button>
+          <p className="hero-supporting">{heroCopy.supporting}</p>
+          <div className="hero-actions">
+            <a className="primary-action" href="#discuss">
+              Discuss Your Project <ArrowRight aria-hidden="true" size={19} />
+            </a>
+            <a className="secondary-action" href="#solutions">
+              Explore Solutions
+            </a>
           </div>
         </div>
-
         <div
-          aria-label="The partners"
-          role="group"
-          className="enter-rise grid w-full max-w-md grid-cols-2 items-start gap-4 [--d:380ms] min-[390px]:gap-5 sm:max-w-xl sm:gap-6 lg:max-w-none lg:gap-7"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Service category stories"
+          className="hero-carousel"
         >
-          {partners.map((p, i) => (
-            <PortraitPlaceholder
-              key={p.name}
-              name={p.name}
-              label={p.label}
-              index={i + 1}
-              className={i === 1 ? "mt-8 sm:mt-12 lg:mt-20" : "lg:mb-20"}
-            />
+          {heroStories.map((story, i) => (
+            <div
+              key={i}
+              role="tabpanel"
+              id={`hero-story-${i}`}
+              aria-labelledby={`hero-story-tab-${i}`}
+              hidden={index !== i}
+              className="hero-story"
+            >
+              <ReferenceMedia index={i} />
+              <span className="story-category">
+                0{i + 1} / {serviceCategories[i]!.title}
+              </span>
+              <div className="story-caption">
+                <h2>{story.title}</h2>
+                <p>{story.caption}</p>
+                <a href={`#service-category-${i}`}>
+                  {serviceCategories[i]!.title} <ArrowRight aria-hidden="true" size={16} />
+                </a>
+              </div>
+            </div>
           ))}
+          <div className="story-controls">
+            <div role="tablist" aria-label="Choose a service story">
+              {heroStories.map((_, i) => (
+                <button
+                  key={i}
+                  ref={(el) => {
+                    buttons.current[i] = el;
+                  }}
+                  id={`hero-story-tab-${i}`}
+                  role="tab"
+                  aria-selected={index === i}
+                  aria-controls={`hero-story-${i}`}
+                  tabIndex={index === i ? 0 : -1}
+                  onKeyDown={(e) => key(e, i)}
+                  onClick={() => setIndex(i)}
+                  aria-label={`Story ${i + 1}: ${serviceCategories[i]!.title}`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+            <span className="sr-only" aria-live="polite">
+              Story {index + 1} of 3: {serviceCategories[index]!.title}
+            </span>
+            <div className="story-arrows">
+              <button
+                type="button"
+                onClick={() => setIndex((index + 2) % 3)}
+                aria-label="Previous service story"
+              >
+                <ArrowLeft aria-hidden="true" size={17} /> Previous
+              </button>
+              <button
+                type="button"
+                onClick={() => setIndex((index + 1) % 3)}
+                aria-label="Next service story"
+              >
+                Next <ArrowRight aria-hidden="true" size={17} />
+              </button>
+            </div>
+          </div>
         </div>
+        <p className="prototype-note">
+          Design preview · imagery is illustrative and does not depict the partners.
+        </p>
       </div>
     </section>
   );
